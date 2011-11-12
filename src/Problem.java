@@ -30,4 +30,24 @@ public class Problem
 			m_center_pieces = new ArrayList<Piece> (m_grid_width * m_grid_height);
 		}
 	}
+
+	public Boolean addPiece (Piece piece)
+	{
+		if (piece == null) return false;
+
+		if (m_bounded) {
+			switch (piece.getAmountOfColor (0)) {
+				case 0:
+					return m_center_pieces.add (piece);
+				case 1:
+					return m_border_pieces.add (piece);
+				case 2:
+					return m_corner_pieces.add (piece);
+				default:
+					return false;
+			}
+		} else {
+			return m_center_pieces.add (piece);
+		}
+	}
 }

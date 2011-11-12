@@ -22,4 +22,15 @@ public class Piece
 	{
 		return m_colors;
 	}
+
+	public int getAmountOfColor (int color)
+	{
+		int result = 0;
+
+		for (Iterator<Integer> i_color = m_colors.iterator() ; i_color.hasNext() ; ) {
+			if (i_color.next() == color) result++;
+		}
+
+		return result;
+	}
 }
