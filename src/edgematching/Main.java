@@ -1,4 +1,8 @@
-public class EdgeMatching 
+package edgematching;
+
+import edgematching.problem.*;
+
+public class Main
 {
 	public static void main (String[] args) 
 	{

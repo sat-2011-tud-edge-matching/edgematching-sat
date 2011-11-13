@@ -1,3 +1,5 @@
+package edgematching.problem;
+
 import java.util.*;
 
 public class Piece
