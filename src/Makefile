@@ -7,6 +7,21 @@
 JFLAGS = 
 JC = javac
 
+OUTPUTJAR = edgematching.jar
+MANIFEST = Manifest.txt
+MAINCLASS = edgematching/Main
+
+
+#
+# CLASSES is a macro consisting of n words (one for each java source file)
+#
+
+CLASSES = \
+        edgematching/problem/Piece.java \
+        edgematching/problem/Problem.java \
+        edgematching/Main.java \
+
+
 
 #
 # Clear any default targets for building .class files from .java files; we 
@@ -35,16 +50,6 @@ JC = javac
 .java.class:
 	$(JC) $(JFLAGS) $*.java
 
-
-#
-# CLASSES is a macro consisting of 4 words (one for each java source file)
-#
-
-CLASSES = \
-        edgematching/problem/Piece.java \
-        edgematching/problem/Problem.java \
-        edgematching/Main.java \
-
 #
 # the default make target entry
 #
@@ -68,11 +73,25 @@ classes: $(CLASSES:.java=.class)
 #
 
 clean:
-	find . -name *.class -print0 | xargs -0 rm
+	find . -name *.class -print0 | xargs -0 rm \
+	$(RM) $(OUTPUTJAR)
 
 #
 # create .jar
 #
 
-jar:
-	find . -name *.class -print0 | xargs -0 jar cfm edgematching.jar Manifest.txt
+$(OUTPUTJAR) : $(CLASSES:.java=.class)
+	jar cfm $(OUTPUTJAR) $(MANIFEST) $(CLASSES:.java=.class)
+
+jar: $(OUTPUTJAR)
+
+
+#
+#
+#
+
+run: classes
+	java $(MAINCLASS)
+
+runjar: jar
+	java -jar $(OUTPUTJAR)
