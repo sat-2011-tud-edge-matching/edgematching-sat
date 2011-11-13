@@ -61,4 +61,30 @@ public class Piece
 
 		return result;
 	}
+
+	public String toString ()
+	{
+		String result = new String();
+
+		for (int i = 0; i < getStringLineCount; i++) {
+			result += getStringLine (i);
+		}
+
+		return result;
+	}
+
+	public static final int getStringLineCount = 7;
+	public String getStringLine (int index)
+	{
+		switch (index) {
+			case 0: return "+-------+\n";
+			case 1: return "|\\  " + getColor(0) + "  /|\n";
+			case 2: return "|  \\ /  |\n";
+			case 3: return "|" + getColor(3) + "  X  " + getColor(1) + "|\n";
+			case 4: return "|  / \\  |\n";
+			case 5: return "|/  " + getColor(2) + "  \\|\n";
+			case 6: return "+-------+\n";
+			default: return null;
+		}
+	}
 }

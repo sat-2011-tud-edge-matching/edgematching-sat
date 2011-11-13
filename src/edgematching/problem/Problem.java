@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Problem
 {
-	private Boolean m_bounded;
-	private Boolean m_signed;
+	private boolean m_bounded;
+	private boolean m_signed;
 
 	private int m_grid_width;
 	private int m_grid_height;
@@ -14,7 +14,11 @@ public class Problem
 	private ArrayList<Piece> m_border_pieces;
 	private ArrayList<Piece> m_center_pieces;
 
-	public Problem (Boolean bounded, Boolean signedProblem, int width, int height)
+	private int m_corner_pieces_count;
+	private int m_border_pieces_count;
+	private int m_center_pieces_count;
+
+	public Problem (boolean bounded, boolean signedProblem, int width, int height)
 	{
 		m_bounded = bounded;
 		m_signed = signedProblem;
@@ -23,17 +27,30 @@ public class Problem
 		m_grid_height = (height > 0 ? height : 0);
 
 		if (m_bounded) {
-			m_corner_pieces = new ArrayList<Piece> (4);
-			m_border_pieces = new ArrayList<Piece> (2 * m_grid_width + 2 * m_grid_height - 4);
-			m_center_pieces = new ArrayList<Piece> ((m_grid_width - 2) * (m_grid_height - 2));
+			m_corner_pieces_count = 4;
+			m_border_pieces_count = 2 * m_grid_width + 2 * m_grid_height - 4;
+			m_center_pieces_count = (m_grid_width - 2) * (m_grid_height - 2);
 		} else {
-			m_corner_pieces = new ArrayList<Piece> (0);
-			m_border_pieces = new ArrayList<Piece> (0);
-			m_center_pieces = new ArrayList<Piece> (m_grid_width * m_grid_height);
+			m_corner_pieces_count = 0;
+			m_border_pieces_count = 0;
+			m_center_pieces_count = m_grid_width * m_grid_height;
 		}
+
+		m_corner_pieces = new ArrayList<Piece> (m_corner_pieces_count);
+		m_border_pieces = new ArrayList<Piece> (m_border_pieces_count);
+		m_center_pieces = new ArrayList<Piece> (m_center_pieces_count);
 	}
 
-	public Boolean addPiece (Piece piece)
+	public boolean specificationCorrect ()
+	{
+		if (m_corner_pieces.size() != m_corner_pieces_count) return false;
+		if (m_border_pieces.size() != m_border_pieces_count) return false;
+		if (m_center_pieces.size() != m_center_pieces_count) return false;
+
+		return true;
+	}
+
+	public boolean addPiece (Piece piece)
 	{
 		if (piece == null) return false;
 
@@ -50,6 +67,28 @@ public class Problem
 			}
 		} else {
 			return m_center_pieces.add (piece);
+		}
+	}
+
+	public void print ()
+	{
+		System.out.println ("Edge-Matching Problem:");
+		System.out.println ("Bounded: " + (m_bounded ? "yes" : "no"));
+		System.out.println ("Signed:  " + (m_signed  ? "yes" : "no"));
+		System.out.println ("Width:   " + m_grid_width);
+		System.out.println ("Height:  " + m_grid_height);
+		System.out.println ("Pieces: ");
+
+		for (Iterator<Piece> i_piece = m_corner_pieces.iterator (); i_piece.hasNext (); ) {
+			System.out.println (i_piece.next ());
+		}
+
+		for (Iterator<Piece> i_piece = m_border_pieces.iterator (); i_piece.hasNext (); ) {
+			System.out.println (i_piece.next ());
+		}
+
+		for (Iterator<Piece> i_piece = m_center_pieces.iterator (); i_piece.hasNext (); ) {
+			System.out.println (i_piece.next ());
 		}
 	}
 }

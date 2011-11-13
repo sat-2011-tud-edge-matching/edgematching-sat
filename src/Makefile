@@ -19,6 +19,7 @@ MAINCLASS = edgematching/Main
 CLASSES = \
         edgematching/problem/Piece.java \
         edgematching/problem/Problem.java \
+        edgematching/problem/Reader.java \
         edgematching/Main.java \
 
 

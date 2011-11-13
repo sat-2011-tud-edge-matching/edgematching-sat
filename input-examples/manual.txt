@@ -1,0 +1,20 @@
+first line:
+"<b> <s> <w> <h>"
+
+b = 1: bounded, b = 0: unbounded
+s = 1: signed,  s = 0: unsigned
+w = grid-width
+h = grid-height
+
+succeeding lines:
+"<a> <b> <c> <d>"
+
+--> one piece, colors numberd clockwise, starting north:
+
++-------+
+|\  a  /|
+|  \ /  |
+|d  X  b|
+|  / \  |
+|/  c  \|
++-------+
