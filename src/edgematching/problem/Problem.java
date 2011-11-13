@@ -4,19 +4,19 @@ import java.util.*;
 
 public class Problem
 {
-	private boolean m_bounded;
-	private boolean m_signed;
+	protected boolean m_bounded;
+	protected boolean m_signed;
 
-	private int m_grid_width;
-	private int m_grid_height;
+	protected int m_grid_width;
+	protected int m_grid_height;
 	
-	private ArrayList<Piece> m_corner_pieces;
-	private ArrayList<Piece> m_border_pieces;
-	private ArrayList<Piece> m_center_pieces;
+	protected ArrayList<Piece> m_corner_pieces;
+	protected ArrayList<Piece> m_border_pieces;
+	protected ArrayList<Piece> m_center_pieces;
 
-	private int m_corner_pieces_count;
-	private int m_border_pieces_count;
-	private int m_center_pieces_count;
+	protected int m_corner_pieces_count;
+	protected int m_border_pieces_count;
+	protected int m_center_pieces_count;
 
 	public Problem (boolean bounded, boolean signedProblem, int width, int height)
 	{

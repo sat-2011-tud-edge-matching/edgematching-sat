@@ -20,6 +20,8 @@ CLASSES = \
         edgematching/problem/Piece.java \
         edgematching/problem/Problem.java \
         edgematching/problem/Reader.java \
+	edgematching/cnf/Clause.java \
+	edgematching/cnf/CNFFormula.java \
         edgematching/Main.java \
 
 

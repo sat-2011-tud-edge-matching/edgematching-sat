@@ -5,8 +5,8 @@ import edgematching.problem.*;
 
 public class Main
 {
-	private static String m_filename;
-	private static Problem m_problem;
+	protected static String m_filename;
+	protected static Problem m_problem;
 
 	public static void main (String[] args) 
 	{
@@ -16,7 +16,7 @@ public class Main
 		m_problem.print ();
 	}
 
-	private static void parseArguments (String[] args)
+	protected static void parseArguments (String[] args)
 	{
 		if (args.length > 0) {
 			m_filename = args[0];

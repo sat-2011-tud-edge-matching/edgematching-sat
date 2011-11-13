@@ -4,9 +4,11 @@ import java.util.*;
 
 public class Piece
 {
-	private ArrayList<Integer> m_colors;
+	public static final int getStringLineCount = 7;
 
-	private int m_rotation;
+	protected ArrayList<Integer> m_colors;
+
+	protected int m_rotation;
 
 	public Piece () 
 	{
@@ -40,12 +42,12 @@ public class Piece
 		return m_colors.get((index + m_rotation) % 4);
 	}
 
-	public List<Integer> getColors ()
+	public Set<Integer> getColors ()
 	{
-		ArrayList<Integer> result = new ArrayList<Integer> (4);
+		HashSet<Integer> result = new HashSet<Integer> (4);
 
 		for (int i_index = 0; i_index < 4; i_index ++) {
-			result.add(i_index, getColor(i_index));
+			result.addAll (m_colors);
 		}
 
 		return result;
@@ -55,8 +57,8 @@ public class Piece
 	{
 		int result = 0;
 
-		for (Iterator<Integer> i_color = m_colors.iterator() ; i_color.hasNext() ; ) {
-			if (i_color.next() == color) result++;
+		for (Iterator<Integer> i_color = m_colors.iterator () ; i_color.hasNext () ; ) {
+			if (i_color.next () == color) result++;
 		}
 
 		return result;
@@ -64,7 +66,7 @@ public class Piece
 
 	public String toString ()
 	{
-		String result = new String();
+		String result = new String ();
 
 		for (int i = 0; i < getStringLineCount; i++) {
 			result += getStringLine (i);
@@ -73,7 +75,6 @@ public class Piece
 		return result;
 	}
 
-	public static final int getStringLineCount = 7;
 	public String getStringLine (int index)
 	{
 		switch (index) {

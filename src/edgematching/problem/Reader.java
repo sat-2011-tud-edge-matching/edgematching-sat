@@ -5,8 +5,8 @@ import java.io.*;
 
 public class Reader
 {
-	private String m_filename;
-	private Problem m_problem;
+	protected String m_filename;
+	protected Problem m_problem;
 
 	public Reader (String filename)
 	{
@@ -26,7 +26,7 @@ public class Reader
 		return m_problem;
 	}
 
-	private boolean parseFile () throws FileNotFoundException
+	protected boolean parseFile () throws FileNotFoundException
 	{
 		Scanner m_line_scanner = new Scanner (new File (m_filename));
 
@@ -42,7 +42,7 @@ public class Reader
 		return true;
 	}
 
-	private boolean parseFirstLine (String line) throws FileNotFoundException
+	protected boolean parseFirstLine (String line) throws FileNotFoundException
 	{
 		Scanner temp_scanner = new Scanner (line);
 
@@ -64,7 +64,7 @@ public class Reader
 		return true;
 	}
 
-	private boolean parsePieceLine (String line) throws FileNotFoundException
+	protected boolean parsePieceLine (String line) throws FileNotFoundException
 	{
 		Scanner temp_scanner = new Scanner (line);
 
