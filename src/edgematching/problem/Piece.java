@@ -39,9 +39,11 @@ public class Piece
 
 	public int getColor (int index)
 	{
-		return m_colors.get((index + m_rotation) % 4);
+		return m_colors.get((index - m_rotation) % 4);
 	}
 
+	// tells us, which colors are contained in this piece ...
+	// needed for calculation of number of y-variables
 	public Set<Integer> getColors ()
 	{
 		HashSet<Integer> result = new HashSet<Integer> (4);
@@ -57,8 +59,8 @@ public class Piece
 	{
 		int result = 0;
 
-		for (Iterator<Integer> i_color = m_colors.iterator () ; i_color.hasNext () ; ) {
-			if (i_color.next () == color) result++;
+		for (Integer i_color : m_colors) {
+			if (i_color == color) result++;
 		}
 
 		return result;

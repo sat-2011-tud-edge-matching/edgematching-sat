@@ -28,7 +28,7 @@ public class Problem
 
 		if (m_bounded) {
 			m_corner_pieces_count = 4;
-			m_border_pieces_count = 2 * m_grid_width + 2 * m_grid_height - 4;
+			m_border_pieces_count = 2 * m_grid_width + 2 * m_grid_height - 8;
 			m_center_pieces_count = (m_grid_width - 2) * (m_grid_height - 2);
 		} else {
 			m_corner_pieces_count = 0;
