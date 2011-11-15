@@ -41,8 +41,8 @@ public class Clause
 	{
 		HashSet<Integer> result = new HashSet<Integer> ();
 
-		for (Iterator<Integer> i_literal = m_literals.iterator (); i_literal.hasNext (); ) {
-			result.add (Math.abs (i_literal.next ()));
+		for (Integer i_literal : m_literals) {
+			result.add (Math.abs (i_literal));
 		}
 
 		return result;
@@ -84,8 +84,8 @@ public class Clause
 		if (other_clause.m_hash_code != this.m_hash_code) return false;
 		if (other_clause.m_literals.size () != this.m_literals.size ()) return false;
 
-		for (Iterator<Integer> i_literal = m_literals.iterator (); i_literal.hasNext (); ) {
-			if (! other_clause.m_literals.contains (i_literal.next ())) return false;
+		for (Integer i_literal : m_literals) {
+			if (! other_clause.m_literals.contains (i_literal)) return false;
 		}
 
 		return true;

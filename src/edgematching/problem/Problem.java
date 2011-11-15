@@ -79,16 +79,16 @@ public class Problem
 		System.out.println ("Height:  " + m_grid_height);
 		System.out.println ("Pieces: ");
 
-		for (Iterator<Piece> i_piece = m_corner_pieces.iterator (); i_piece.hasNext (); ) {
-			System.out.println (i_piece.next ());
+		for (Piece i_piece : m_corner_pieces) {
+			System.out.println (i_piece);
 		}
 
-		for (Iterator<Piece> i_piece = m_border_pieces.iterator (); i_piece.hasNext (); ) {
-			System.out.println (i_piece.next ());
+		for (Piece i_piece : m_border_pieces) {
+			System.out.println (i_piece);
 		}
 
-		for (Iterator<Piece> i_piece = m_center_pieces.iterator (); i_piece.hasNext (); ) {
-			System.out.println (i_piece.next ());
+		for (Piece i_piece : m_center_pieces) {
+			System.out.println (i_piece);
 		}
 	}
 }

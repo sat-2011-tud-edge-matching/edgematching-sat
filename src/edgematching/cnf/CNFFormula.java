@@ -80,8 +80,8 @@ public class CNFFormula
 
 		result += "p cnf " + m_variables.size () + " " + m_clauses.size () + "\n";
 
-		for (Iterator<Clause> i_clause = m_clauses.iterator (); i_clause.hasNext (); ) {
-			result += i_clause.next ().toDIMACS ();
+		for (Clause i_clause : m_clauses) {
+			result += i_clause.toDIMACS ();
 		}
 
 		return result;
