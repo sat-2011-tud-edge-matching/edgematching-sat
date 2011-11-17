@@ -18,6 +18,9 @@ public class Problem
 	protected int m_border_pieces_count;
 	protected int m_center_pieces_count;
 
+	protected SortedSet<Integer> m_border_colors;
+	protected SortedSet<Integer> m_center_colors;
+
 	public Problem (boolean bounded, boolean signedProblem, int width, int height)
 	{
 		m_bounded = bounded;
@@ -39,6 +42,9 @@ public class Problem
 		m_corner_pieces = new ArrayList<Piece> (m_corner_pieces_count);
 		m_border_pieces = new ArrayList<Piece> (m_border_pieces_count);
 		m_center_pieces = new ArrayList<Piece> (m_center_pieces_count);
+
+		m_border_colors = new TreeSet<Integer> ();
+		m_center_colors = new TreeSet<Integer> ();
 	}
 
 	public boolean specificationCorrect ()
@@ -57,10 +63,13 @@ public class Problem
 		if (m_bounded) {
 			switch (piece.getAmountOfColor (0)) {
 				case 0:
+					m_center_colors.addAll (piece.getColors ());
 					return m_center_pieces.add (piece);
 				case 1:
+					m_border_colors.addAll (piece.getColors ());
 					return m_border_pieces.add (piece);
 				case 2:
+					m_border_colors.addAll (piece.getColors ());
 					return m_corner_pieces.add (piece);
 				default:
 					return false;

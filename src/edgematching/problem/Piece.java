@@ -48,9 +48,7 @@ public class Piece
 	{
 		HashSet<Integer> result = new HashSet<Integer> (4);
 
-		for (int i_index = 0; i_index < 4; i_index ++) {
-			result.addAll (m_colors);
-		}
+		result.addAll (m_colors);
 
 		return result;
 	}

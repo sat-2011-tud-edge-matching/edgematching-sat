@@ -3,11 +3,25 @@ package edgematching;
 import edgematching.*;
 import edgematching.problem.*;
 
+/*
+ * Main Class ...
+ *
+ * contains main-function (invoked at program start)
+ * and all "global" variables (static ...)
+ *
+ * ... is never instantiated (--> static variables)
+ *
+ */
 public class Main
 {
 	protected static String m_filename;
 	protected static Problem m_problem;
 
+	/*
+	 * main function
+	 *
+	 *
+	 */
 	public static void main (String[] args) 
 	{
 		parseArguments (args);
