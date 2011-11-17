@@ -2,20 +2,32 @@ package edgematching.problem;
 
 import java.util.*;
 
+/*
+ * Class for a piece of the edgematching-puzzle
+ */
 public class Piece
 {
+	// number of lines needed for printing the piece to the screen
 	public static final int getStringLineCount = 7;
 
+	// colors of the piece clockwise stored in this list
 	protected ArrayList<Integer> m_colors;
 
+	// rotation of piece (in {0,1,2,3}) in 90 degree steps clockwise
+	// used for the solution of our problem
 	protected int m_rotation;
 
+	// empty constructor (not useful)
 	public Piece () 
 	{
 		m_colors = new ArrayList<Integer> (4);
 		m_rotation = 0;
 	}
 
+	/*
+	 * constructor with all 4 colors given
+	 * --> are inserted directly
+	 */
 	public Piece (int color1, int color2, int color3, int color4)
 	{
 		m_colors = new ArrayList<Integer> (4);
@@ -27,6 +39,7 @@ public class Piece
 		m_colors.add (3, color4);
 	}
 
+	// getter and setter of rotation
 	public void setRotation (int rotation)
 	{
 		m_rotation = rotation % 4;
@@ -37,6 +50,7 @@ public class Piece
 		return m_rotation;
 	}
 
+	// get color at position wrt current rotation
 	public int getColor (int index)
 	{
 		return m_colors.get((index - m_rotation) % 4);
@@ -53,6 +67,9 @@ public class Piece
 		return result;
 	}
 
+	/* get amount of the given color ...
+	 * needed for finding corner/border-pieces --> amount of 0-color
+	 */
 	public int getAmountOfColor (int color)
 	{
 		int result = 0;
@@ -64,27 +81,35 @@ public class Piece
 		return result;
 	}
 
+	/*
+	 * converts piece to an output-String (line-by-line)
+	 */
 	public String toString ()
 	{
 		String result = new String ();
 
 		for (int i = 0; i < getStringLineCount; i++) {
-			result += getStringLine (i);
+			result += getStringLine (i) + "\n";
 		}
 
 		return result;
 	}
 
+	/*
+	 * delivers one line of output-String
+	 * --> needed if more than 2 or more pieces are printed besides each other
+	 *  --> first lines of each pieces are concatenated to one line, ...
+	 */
 	public String getStringLine (int index)
 	{
 		switch (index) {
-			case 0: return "+-------+\n";
-			case 1: return "|\\  " + getColor(0) + "  /|\n";
-			case 2: return "|  \\ /  |\n";
-			case 3: return "|" + getColor(3) + "  X  " + getColor(1) + "|\n";
-			case 4: return "|  / \\  |\n";
-			case 5: return "|/  " + getColor(2) + "  \\|\n";
-			case 6: return "+-------+\n";
+			case 0: return "+-------+";
+			case 1: return "|\\  " + getColor(0) + "  /|";
+			case 2: return "|  \\ /  |";
+			case 3: return "|" + getColor(3) + "  X  " + getColor(1) + "|";
+			case 4: return "|  / \\  |";
+			case 5: return "|/  " + getColor(2) + "  \\|";
+			case 6: return "+-------+";
 			default: return null;
 		}
 	}

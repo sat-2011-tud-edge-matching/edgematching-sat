@@ -2,25 +2,34 @@ package edgematching.problem;
 
 import java.util.*;
 
+/*
+ * class for the edgematching-problem
+ */
 public class Problem
 {
+	// bounded and signed?
 	protected boolean m_bounded;
 	protected boolean m_signed;
 
+	// width and height of problem
 	protected int m_grid_width;
 	protected int m_grid_height;
 	
+	// pieces grouped by corner/border/center
 	protected ArrayList<Piece> m_corner_pieces;
 	protected ArrayList<Piece> m_border_pieces;
 	protected ArrayList<Piece> m_center_pieces;
 
+	// amount of pieces in each group
 	protected int m_corner_pieces_count;
 	protected int m_border_pieces_count;
 	protected int m_center_pieces_count;
 
+	// colors in border-/center-diamonds
 	protected SortedSet<Integer> m_border_colors;
 	protected SortedSet<Integer> m_center_colors;
 
+	// constructor with main properties --> calculation of other properties possible
 	public Problem (boolean bounded, boolean signedProblem, int width, int height)
 	{
 		m_bounded = bounded;
@@ -47,6 +56,7 @@ public class Problem
 		m_center_colors = new TreeSet<Integer> ();
 	}
 
+	// checks for correct amount of pieces in each set
 	public boolean specificationCorrect ()
 	{
 		if (m_corner_pieces.size() != m_corner_pieces_count) return false;
@@ -56,6 +66,7 @@ public class Problem
 		return true;
 	}
 
+	// add a piece to the problem --> put it to the correct set
 	public boolean addPiece (Piece piece)
 	{
 		if (piece == null) return false;
@@ -79,6 +90,7 @@ public class Problem
 		}
 	}
 
+	// print problem (header and pieces)
 	public void print ()
 	{
 		System.out.println ("Edge-Matching Problem:");

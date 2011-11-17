@@ -20,6 +20,9 @@ public class Main
 	/*
 	 * main function
 	 *
+	 * reads in the file containing pieces,
+	 * transforms them to sat (not yet implemented)
+	 * ...
 	 *
 	 */
 	public static void main (String[] args) 
@@ -30,6 +33,11 @@ public class Main
 		m_problem.print ();
 	}
 
+	/*
+	 * parse arguments of the program...
+	 * until now just read filename of input-file
+	 * print an error otherwise
+	 */
 	protected static void parseArguments (String[] args)
 	{
 		if (args.length > 0) {
@@ -40,6 +48,10 @@ public class Main
 		}
 	}
 
+	/*
+	 * read problem out of file to m_problem
+	 * and check for valid problem
+	 */
 	public static void readProblem ()
 	{
 		edgematching.problem.Reader temp_reader = new edgematching.problem.Reader (m_filename);
