@@ -19,7 +19,9 @@ MAINCLASS = edgematching/Main
 CLASSES = \
         edgematching/problem/Piece.java \
         edgematching/problem/Problem.java \
+        edgematching/problem/ProblemEncodingSimple.java \
         edgematching/problem/Reader.java \
+	edgematching/cnf/SATSolvable.java \
 	edgematching/cnf/Clause.java \
 	edgematching/cnf/CNFFormula.java \
         edgematching/Main.java \
