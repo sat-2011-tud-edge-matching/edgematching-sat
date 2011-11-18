@@ -3,16 +3,28 @@ package edgematching.problem;
 import java.util.*;
 import java.io.*;
 
+/*
+ * Class reading in a edgematching-file into an edgematching.problem.Problem object...
+ */
 public class Reader
 {
+	/*
+	 * Filename of file and object containing the Problem
+	 */
 	protected String m_filename;
 	protected Problem m_problem;
 
+	/* 
+	 * constructor setting the filename
+	 */
 	public Reader (String filename)
 	{
 		m_filename = filename;
 	}
 
+	/*
+	 * return (and if necessary read) the problem
+	 */
 	public Problem getProblem ()
 	{
 		if (m_problem == null) {
@@ -26,6 +38,10 @@ public class Reader
 		return m_problem;
 	}
 
+	/*
+	 * parses the input file line by line
+	 * --> hands lines over to specialised functions
+	 */
 	protected boolean parseFile () throws FileNotFoundException
 	{
 		Scanner m_line_scanner = new Scanner (new File (m_filename));
@@ -42,6 +58,10 @@ public class Reader
 		return true;
 	}
 
+	/*
+	 * parses the headline containing problem properties
+	 * sets up m_problem apropriately
+	 */
 	protected boolean parseFirstLine (String line) throws FileNotFoundException
 	{
 		Scanner temp_scanner = new Scanner (line);
@@ -64,6 +84,10 @@ public class Reader
 		return true;
 	}
 
+	/*
+	 * parses lines containing a piece
+	 * adds specified piece to m_problem
+	 */
 	protected boolean parsePieceLine (String line) throws FileNotFoundException
 	{
 		Scanner temp_scanner = new Scanner (line);
