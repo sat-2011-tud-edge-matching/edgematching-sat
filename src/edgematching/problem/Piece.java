@@ -24,15 +24,6 @@ public class Piece
 	protected int m_rotation;
 
 	/*
-	 * empty constructor (not useful)
-	 */
-	public Piece () 
-	{
-		m_colors = new ArrayList<Integer> (4);
-		m_rotation = 0;
-	}
-
-	/*
 	 * constructor with all 4 colors given
 	 * --> are inserted directly
 	 */
@@ -69,16 +60,27 @@ public class Piece
 	}
 
 	/*
-	 * tells us, which colors are contained in this piece ...
-	 * needed for calculation of number of y-variables
+	 * inserts colors of this piece into a given set of colors
 	 */
-	public Set<Integer> getColors ()
+	public void insertAllColors (Set<Integer> colorSet)
 	{
-		HashSet<Integer> result = new HashSet<Integer> (4);
+		colorSet.addAll (m_colors);
+	}
 
-		result.addAll (m_colors);
+	/*
+	 * inserts border-colors of this piece into a given set of colors
+	 */
+	public void insertBorderColors (Set<Integer> borderColorSet)
+	{
+		for (int i = 0; i < 4; i++) {
+			if (m_colors.get (i) == 0) {
+				int leftColor  = m_colors.get ((i-1)%4);
+				int rightColor = m_colors.get ((i+1)%4);
 
-		return result;
+				if (leftColor  != 0) borderColorSet.add (leftColor);
+				if (rightColor != 0) borderColorSet.add (rightColor);
+			}
+		}
 	}
 
 	/*

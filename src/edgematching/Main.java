@@ -30,7 +30,7 @@ public class Main
 		parseArguments (args);
 		System.out.println ("Reading input file ...");
 		readProblem ();
-		m_problem.print ();
+		m_problem.printProblem ();
 	}
 
 	/*

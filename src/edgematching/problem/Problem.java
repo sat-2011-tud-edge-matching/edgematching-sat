@@ -27,6 +27,11 @@ public class Problem
 	protected ArrayList<Piece> m_center_pieces;
 
 	/*
+	 * grid containing all pieces after solving the puzzle
+	 */
+	protected ArrayList<Piece> m_grid;
+
+	/*
 	 * amount of pieces in each group
 	 */
 	protected int m_corner_pieces_count;
@@ -63,6 +68,8 @@ public class Problem
 		m_corner_pieces = new ArrayList<Piece> (m_corner_pieces_count);
 		m_border_pieces = new ArrayList<Piece> (m_border_pieces_count);
 		m_center_pieces = new ArrayList<Piece> (m_center_pieces_count);
+
+		m_grid          = null;
 
 		m_border_colors = new TreeSet<Integer> ();
 		m_center_colors = new TreeSet<Integer> ();
@@ -110,13 +117,13 @@ public class Problem
 		if (m_bounded) {
 			switch (piece.getAmountOfColor (0)) {
 				case 0:
-					m_center_colors.addAll (piece.getColors ());
+					piece.insertAllColors (m_center_colors);
 					return m_center_pieces.add (piece);
 				case 1:
-					m_border_colors.addAll (piece.getColors ());
+					piece.insertBorderColors (m_border_colors);
 					return m_border_pieces.add (piece);
 				case 2:
-					m_border_colors.addAll (piece.getColors ());
+					piece.insertBorderColors (m_border_colors);
 					return m_corner_pieces.add (piece);
 				default:
 					return false;
@@ -129,7 +136,7 @@ public class Problem
 	/*
 	 * print problem (header and pieces)
 	 */
-	public void print ()
+	public void printProblem ()
 	{
 		System.out.println ("Edge-Matching Problem:");
 		System.out.println ("Bounded: " + (m_bounded ? "yes" : "no"));
@@ -148,6 +155,29 @@ public class Problem
 
 		for (Piece i_piece : m_center_pieces) {
 			System.out.println (i_piece);
+		}
+	}
+
+	/*
+	 * print solution of the problem
+	 */
+	public void printSolution ()
+	{
+		if (m_grid == null) {
+			System.out.println ("Problem is not yet solved...");
+			return;
+		}
+
+		for (int i_grid_line = 0; i_grid_line < m_grid_width; i_grid_line ++) {
+			for (int i_piece_line = 0; i_piece_line < Piece.getStringLineCount; i_piece_line ++) {
+				String currentOutputLine = new String ();
+
+				for (int i_column = 0; i_column < m_grid_height; i_column ++) {
+					currentOutputLine += m_grid.get (i_piece_line * m_grid_width + i_column).getStringLine (i_piece_line);
+				}
+
+				System.out.println (currentOutputLine);
+			}
 		}
 	}
 }
