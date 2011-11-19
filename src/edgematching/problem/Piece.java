@@ -74,7 +74,7 @@ public class Piece
 	{
 		for (int i = 0; i < 4; i++) {
 			if (m_colors.get (i) == 0) {
-				int leftColor  = m_colors.get ((i-1)%4);
+				int leftColor  = m_colors.get ((i+3)%4);
 				int rightColor = m_colors.get ((i+1)%4);
 
 				if (leftColor  != 0) borderColorSet.add (leftColor);

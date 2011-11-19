@@ -2,6 +2,7 @@ package edgematching;
 
 import edgematching.*;
 import edgematching.problem.*;
+import edgematching.cnf.*;
 
 /*
  * Main Class ...
@@ -31,6 +32,11 @@ public class Main
 		System.out.println ("Reading input file ...");
 		readProblem ();
 		m_problem.printProblem ();
+
+		ProblemEncodingSimple problemEncodingSimple = new ProblemEncodingSimple (m_problem);
+		CNFFormula cnfFormula = problemEncodingSimple.encodeToSAT ();
+		
+		System.out.println (cnfFormula.toDIMACS ());
 	}
 
 	/*
