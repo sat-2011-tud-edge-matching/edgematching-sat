@@ -261,24 +261,32 @@ public class ProblemEncodingSimple extends Problem
 			current_position ++;
 		}
 
-		m_corner_place_numbers.add (convertXYToSubsequentNumber (0, 0));
-		m_corner_place_numbers.add (convertXYToSubsequentNumber (0, m_grid_height - 1));
-		m_corner_place_numbers.add (convertXYToSubsequentNumber (m_grid_width - 1, 0));
-		m_corner_place_numbers.add (convertXYToSubsequentNumber (m_grid_width - 1, m_grid_height - 1));
+		if (m_bounded) {
+			m_corner_place_numbers.add (convertXYToSubsequentNumber (0, 0));
+			m_corner_place_numbers.add (convertXYToSubsequentNumber (0, m_grid_height - 1));
+			m_corner_place_numbers.add (convertXYToSubsequentNumber (m_grid_width - 1, 0));
+			m_corner_place_numbers.add (convertXYToSubsequentNumber (m_grid_width - 1, m_grid_height - 1));
 
-		for (int i_x = 1; i_x < m_grid_width - 1; i_x ++) {
-			m_border_place_numbers.add (convertXYToSubsequentNumber (i_x, 0));
-			m_border_place_numbers.add (convertXYToSubsequentNumber (i_x, m_grid_height - 1));
-		}
+			for (int i_x = 1; i_x < m_grid_width - 1; i_x ++) {
+				m_border_place_numbers.add (convertXYToSubsequentNumber (i_x, 0));
+				m_border_place_numbers.add (convertXYToSubsequentNumber (i_x, m_grid_height - 1));
+			}
 
-		for (int i_y = 1; i_y < m_grid_height - 1; i_y ++) {
-			m_border_place_numbers.add (convertXYToSubsequentNumber (0, i_y));
-			m_border_place_numbers.add (convertXYToSubsequentNumber (m_grid_height - 1, i_y));
-		}
-
-		for (int i_x = 1; i_x < m_grid_width - 1; i_x ++) {
 			for (int i_y = 1; i_y < m_grid_height - 1; i_y ++) {
-				m_center_place_numbers.add (convertXYToSubsequentNumber (i_x, i_y));
+				m_border_place_numbers.add (convertXYToSubsequentNumber (0, i_y));
+				m_border_place_numbers.add (convertXYToSubsequentNumber (m_grid_height - 1, i_y));
+			}
+
+			for (int i_x = 1; i_x < m_grid_width - 1; i_x ++) {
+				for (int i_y = 1; i_y < m_grid_height - 1; i_y ++) {
+					m_center_place_numbers.add (convertXYToSubsequentNumber (i_x, i_y));
+				}
+			}
+		} else {
+			for (int i_x = 0; i_x < m_grid_width; i_x ++) {
+				for (int i_y = 0; i_y < m_grid_height; i_y ++) {
+					m_center_place_numbers.add (convertXYToSubsequentNumber (i_x, i_y));
+				}
 			}
 		}
 	}
