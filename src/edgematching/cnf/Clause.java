@@ -27,6 +27,15 @@ public class Clause
 	}
 
 	/*
+	 * constructor, initializes variables according to estimated size
+	 */
+	public Clause (int estimatedSize)
+	{
+		m_literals = new ArrayList<Integer> (estimatedSize);
+		m_hash_code = 0;
+	}
+
+	/*
 	 * Constructor accepting an array of literals
 	 * which are inserted;
 	 * m_hash_code is modified appropriately
@@ -121,7 +130,7 @@ public class Clause
 		}
 
 		// else check for type of other object
-		if (o instanceof Clause) return false;
+		if (!(o instanceof Clause)) return false;
 
 		Clause other_clause = (Clause) o;
 

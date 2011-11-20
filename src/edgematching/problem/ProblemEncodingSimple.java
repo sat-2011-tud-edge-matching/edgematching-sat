@@ -57,14 +57,14 @@ public class ProblemEncodingSimple extends Problem
 				(m_bounded ? "bounded" : "unbounded") + " and " + (m_signed ? "signed" : "unsigned") + ".\n");
 
 		if (m_bounded) {
-			encodeCornerPieces (formula);
+			encodeCorners (formula);
+			encodeBorders (formula);
 		}
+		
+		encodeCenter (formula);
 
 		/*
 		 * here the encoding steps will be inserted ...
-		 * something like:
-		 *
-		 * formula.addClause ({-1, 2, 5});
 		 */
 
 		return formula;
@@ -87,12 +87,12 @@ public class ProblemEncodingSimple extends Problem
 	 */
 
 	/*
-	 * create clauses concerning corner pieces
+	 * create clauses concerning corner pieces and places
 	 */
-	protected void encodeCornerPieces (CNFFormula formula)
+	protected void encodeCorners (CNFFormula formula)
 	{
 		for (Integer i_piece : m_corner_piece_numbers) {
-			Clause tempClause = new Clause ();
+			Clause tempClause = new Clause (m_corner_pieces_count);
 
 			for (Integer i_place : m_corner_place_numbers) {
 				tempClause.add (convertXijToSATVariable (i_piece, i_place));
@@ -101,14 +101,98 @@ public class ProblemEncodingSimple extends Problem
 			formula.addClause (tempClause);
 
 			for (Integer i_place : m_border_place_numbers) {
-				int[] tempArray = {convertXijToSATVariable (i_piece, i_place)};
+				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
 				formula.addClause (tempArray);
 			}
 
 			for (Integer i_place : m_center_place_numbers) {
-				int[] tempArray = {convertXijToSATVariable (i_piece, i_place)};
+				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
 				formula.addClause (tempArray);
 			}
+		}
+
+		for (Integer i_place : m_corner_place_numbers) {
+			Clause tempClause = new Clause (m_corner_pieces_count);
+
+			for (Integer i_piece : m_corner_piece_numbers) {
+				tempClause.add (convertXijToSATVariable (i_piece, i_place));
+			}
+
+			formula.addClause (tempClause);
+		}
+
+	}
+
+	/*
+	 * create clauses concerning border pieces and places
+	 */
+	protected void encodeBorders (CNFFormula formula)
+	{
+		for (Integer i_piece : m_border_piece_numbers) {
+			Clause tempClause = new Clause (m_border_pieces_count);
+
+			for (Integer i_place : m_border_place_numbers) {
+				tempClause.add (convertXijToSATVariable (i_piece, i_place));
+			}
+
+			formula.addClause (tempClause);
+
+			for (Integer i_place : m_corner_place_numbers) {
+				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
+				formula.addClause (tempArray);
+			}
+
+			for (Integer i_place : m_center_place_numbers) {
+				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
+				formula.addClause (tempArray);
+			}
+		}
+
+		for (Integer i_place : m_border_place_numbers) {
+			Clause tempClause = new Clause (m_border_pieces_count);
+
+			for (Integer i_piece : m_border_piece_numbers) {
+				tempClause.add (convertXijToSATVariable (i_piece, i_place));
+			}
+
+			formula.addClause (tempClause);
+		}
+
+	}
+
+	/*
+	 * create clauses concerning center pieces and places
+	 */
+	protected void encodeCenter (CNFFormula formula)
+	{
+		for (Integer i_piece : m_center_piece_numbers) {
+			Clause tempClause = new Clause (m_center_pieces_count);
+
+			for (Integer i_place : m_center_place_numbers) {
+				tempClause.add (convertXijToSATVariable (i_piece, i_place));
+			}
+
+			formula.addClause (tempClause);
+
+			for (Integer i_place : m_corner_place_numbers) {
+				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
+				formula.addClause (tempArray);
+			}
+
+			for (Integer i_place : m_border_place_numbers) {
+				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
+				formula.addClause (tempArray);
+			}
+		}
+
+		for (Integer i_place : m_center_place_numbers) {
+			Clause tempClause = new Clause (m_center_pieces_count);
+
+			for (Integer i_piece : m_center_piece_numbers) {
+				tempClause.add (convertXijToSATVariable (i_piece, i_place));
+			}
+
+			formula.addClause (tempClause);
 		}
 
 	}
