@@ -83,6 +83,14 @@ public class CNFFormula
 	}
 
 	/*
+	 * return the number of variables
+	 */
+	public int getAmountOfVariables ()
+	{
+		return m_variables.size ();
+	}
+
+	/*
 	 * true, if CNFFormula has a model
 	 */
 	public boolean isSolved ()
@@ -93,11 +101,27 @@ public class CNFFormula
 	/*
 	 * return the model of the CNFFormula
 	 */
-	public Set<Integer> m_solution ()
+	public Set<Integer> getSolution ()
 	{
 		if (! m_solved) return null;
 
 		return m_solution;
+	}
+
+	/*
+	 * set the solution of the formula calculated by a solver...
+	 */
+	public void setSolution (Collection<Integer> solution)
+	{
+		if (solution == null) return;
+
+		m_solution = new TreeSet<Integer> ();
+
+		for (Integer i_literal : solution) {
+			m_solution.add (i_literal);
+		}
+
+		m_solved = true;
 	}
 
 	/*

@@ -103,9 +103,22 @@ public class ProblemEncodingSimple extends Problem
 	 */
 	public void decodeSolution (CNFFormula formula)
 	{
+		if (! formula.isSolved ()) return;
+
+		TreeSet<Integer> solution = new TreeSet<Integer> ();
+
+		for (Integer i_literal : formula.getSolution ()) {
+			if (i_literal > 0) {
+				solution.add (i_literal);
+			}
+		}
+
 		/*
 		 * here the solution of formula has to be decoded back ...
 		 */
+
+		System.out.println ("Solution: ");
+		System.out.println (solution);
 	}
 
 	/*
