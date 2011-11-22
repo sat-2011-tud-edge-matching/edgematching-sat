@@ -10,10 +10,15 @@ public class ProblemEncodingSimple extends Problem
 	implements SATSolvable
 {
 	/*
-	 * amounts of colors
+	 * amounts of colors and mapping
 	 */
-	protected int m_amount_of_border_colors;
-	protected int m_amount_of_center_colors;
+	protected int m_border_colors_count;
+	protected int m_center_colors_count;
+
+	protected Map<Integer,Integer> m_border_colors_map_forward;
+	protected Map<Integer,Integer> m_border_colors_map_backward;
+	protected Map<Integer,Integer> m_center_colors_map_forward;
+	protected Map<Integer,Integer> m_center_colors_map_backward;
 
 	/*
 	 * list of all pieces
@@ -35,16 +40,29 @@ public class ProblemEncodingSimple extends Problem
 	protected ArrayList<Integer> m_center_place_numbers;
 
 	/*
+	 * diamonds and mapping of diamonds ...
+	 */
+	protected ArrayList<Integer> m_border_diamonds;
+	protected ArrayList<Integer> m_center_diamonds;
+
+	protected int m_border_diamonds_count;
+	protected int m_center_diamonds_count;
+
+	protected Map<Integer,Integer> m_border_diamonds_map_forward;
+	protected Map<Integer,Integer> m_border_diamonds_map_backward;
+	protected Map<Integer,Integer> m_center_diamonds_map_forward;
+	protected Map<Integer,Integer> m_center_diamonds_map_backward;
+
+	/*
 	 * simple constructor cloning the original problem
 	 */
 	public ProblemEncodingSimple (Problem problem)
 	{
 		super (problem);
 
-		m_amount_of_border_colors = m_border_colors.size ();
-		m_amount_of_center_colors = m_center_colors.size ();
-
-		initNumberArrays ();
+		initPiecesAndPlaces ();
+		initColors ();
+		initDiamonds ();
 	}
 
 	/*
@@ -91,6 +109,7 @@ public class ProblemEncodingSimple extends Problem
 	 */
 	protected void encodeCorners (CNFFormula formula)
 	{
+		// each corner piece has to be on at least one corner place
 		for (Integer i_piece : m_corner_piece_numbers) {
 			Clause tempClause = new Clause (m_corner_pieces_count);
 
@@ -109,8 +128,21 @@ public class ProblemEncodingSimple extends Problem
 				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
 				formula.addClause (tempArray);
 			}
+
+			// two equal pieces cannot be on the same place
+			for (Integer i_other_piece : m_corner_piece_numbers) {
+				if (i_piece == i_other_piece) continue;
+				if (! (m_pieces.get (i_piece).equals (m_pieces.get (i_other_piece)))) continue;
+
+				for (Integer i_place : m_corner_place_numbers) {
+					int[] tempArray = {- convertXijToSATVariable (i_piece, i_place),
+							   - convertXijToSATVariable (i_other_piece, i_place)};
+					formula.addClause (tempArray);
+				}
+			}
 		}
 
+		// each corner place has to contain at least one corner piece
 		for (Integer i_place : m_corner_place_numbers) {
 			Clause tempClause = new Clause (m_corner_pieces_count);
 
@@ -145,6 +177,18 @@ public class ProblemEncodingSimple extends Problem
 			for (Integer i_place : m_center_place_numbers) {
 				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
 				formula.addClause (tempArray);
+			}
+
+			// two equal pieces cannot be on the same place
+			for (Integer i_other_piece : m_border_piece_numbers) {
+				if (i_piece == i_other_piece) continue;
+				if (! (m_pieces.get (i_piece).equals (m_pieces.get (i_other_piece)))) continue;
+
+				for (Integer i_place : m_border_place_numbers) {
+					int[] tempArray = {- convertXijToSATVariable (i_piece, i_place),
+							   - convertXijToSATVariable (i_other_piece, i_place)};
+					formula.addClause (tempArray);
+				}
 			}
 		}
 
@@ -183,6 +227,18 @@ public class ProblemEncodingSimple extends Problem
 				int[] tempArray = {- convertXijToSATVariable (i_piece, i_place)};
 				formula.addClause (tempArray);
 			}
+
+			// two equal pieces cannot be on the same place
+			for (Integer i_other_piece : m_center_piece_numbers) {
+				if (i_piece == i_other_piece) continue;
+				if (! (m_pieces.get (i_piece).equals (m_pieces.get (i_other_piece)))) continue;
+
+				for (Integer i_place : m_center_place_numbers) {
+					int[] tempArray = {- convertXijToSATVariable (i_piece, i_place),
+							   - convertXijToSATVariable (i_other_piece, i_place)};
+					formula.addClause (tempArray);
+				}
+			}
 		}
 
 		for (Integer i_place : m_center_place_numbers) {
@@ -206,30 +262,60 @@ public class ProblemEncodingSimple extends Problem
 	/*
 	 * convert x-y-coordinates of a place in {0, ..., n-1} to a number in {0, ..., n^2-1}
 	 */
-	protected int convertXYToSubsequentNumber (int x, int y)
+	protected final int convertXYToPlaceNumber (int x, int y)
 	{
-		return (m_grid_width * x) + y;
+		return (m_grid_width * y) + x;
 	}
 
-	protected int convertXijToSATVariable (int piece, int place)
+	protected final int convertPlaceNumberToX (int place)
+	{
+		return (place % m_grid_width);
+	}
+
+	protected final int convertPlaceNumberToY (int place)
+	{
+		return (place / m_grid_width);
+	}
+
+	protected final int convertXijToSATVariable (int piece, int place)
 	{
 		return (m_grid_width * m_grid_height * place + piece) + 1;
 	}
 
-	protected int convertSATVariableToPiece (int variable)
+	protected final int convertSATVariableToPiece (int variable)
 	{
 		return (variable - 1) % (m_grid_width * m_grid_height);
 	}
 
-	protected int convertSATVariableToPlace (int variable)
+	protected final int convertSATVariableToPlace (int variable)
 	{
 		return (variable - 1) / (m_grid_width * m_grid_height);
+	}
+
+	protected final int getLeftDiamondOfPlace (int x, int y)
+	{
+		return ((2 * m_grid_width - 1) * y + x - 1);
+	}
+
+	protected final int getRightDiamondOfPlace (int x, int y)
+	{
+		return ((2 * m_grid_width - 1) * y + x);
+	}
+
+	protected final int getTopDiamondOfPlace (int x, int y)
+	{
+		return ((2 * m_grid_width - 1) * y + x - m_grid_width);
+	}
+
+	protected final int getBottomDiamondOfPlace (int x, int y)
+	{
+		return ((2 * m_grid_width - 1) * y + x + m_grid_width - 1);
 	}
 
 	/*
 	 * initialize arrays containing piece and place numbers...
 	 */
-	protected void initNumberArrays ()
+	protected void initPiecesAndPlaces ()
 	{
 		m_pieces = new ArrayList<Piece> (m_grid_width * m_grid_height);
 
@@ -262,32 +348,113 @@ public class ProblemEncodingSimple extends Problem
 		}
 
 		if (m_bounded) {
-			m_corner_place_numbers.add (convertXYToSubsequentNumber (0, 0));
-			m_corner_place_numbers.add (convertXYToSubsequentNumber (0, m_grid_height - 1));
-			m_corner_place_numbers.add (convertXYToSubsequentNumber (m_grid_width - 1, 0));
-			m_corner_place_numbers.add (convertXYToSubsequentNumber (m_grid_width - 1, m_grid_height - 1));
+			m_corner_place_numbers.add (convertXYToPlaceNumber (0, 0));
+			m_corner_place_numbers.add (convertXYToPlaceNumber (0, m_grid_height - 1));
+			m_corner_place_numbers.add (convertXYToPlaceNumber (m_grid_width - 1, 0));
+			m_corner_place_numbers.add (convertXYToPlaceNumber (m_grid_width - 1, m_grid_height - 1));
 
 			for (int i_x = 1; i_x < m_grid_width - 1; i_x ++) {
-				m_border_place_numbers.add (convertXYToSubsequentNumber (i_x, 0));
-				m_border_place_numbers.add (convertXYToSubsequentNumber (i_x, m_grid_height - 1));
+				m_border_place_numbers.add (convertXYToPlaceNumber (i_x, 0));
+				m_border_place_numbers.add (convertXYToPlaceNumber (i_x, m_grid_height - 1));
 			}
 
 			for (int i_y = 1; i_y < m_grid_height - 1; i_y ++) {
-				m_border_place_numbers.add (convertXYToSubsequentNumber (0, i_y));
-				m_border_place_numbers.add (convertXYToSubsequentNumber (m_grid_height - 1, i_y));
+				m_border_place_numbers.add (convertXYToPlaceNumber (0, i_y));
+				m_border_place_numbers.add (convertXYToPlaceNumber (m_grid_height - 1, i_y));
 			}
 
 			for (int i_x = 1; i_x < m_grid_width - 1; i_x ++) {
 				for (int i_y = 1; i_y < m_grid_height - 1; i_y ++) {
-					m_center_place_numbers.add (convertXYToSubsequentNumber (i_x, i_y));
+					m_center_place_numbers.add (convertXYToPlaceNumber (i_x, i_y));
 				}
 			}
 		} else {
 			for (int i_x = 0; i_x < m_grid_width; i_x ++) {
 				for (int i_y = 0; i_y < m_grid_height; i_y ++) {
-					m_center_place_numbers.add (convertXYToSubsequentNumber (i_x, i_y));
+					m_center_place_numbers.add (convertXYToPlaceNumber (i_x, i_y));
 				}
 			}
+		}
+	}
+
+	/*
+	 * initialize colors and mapping
+	 */
+	protected void initColors ()
+	{
+		m_border_colors_count = m_border_colors.size ();
+		m_center_colors_count = m_center_colors.size ();
+
+		m_border_colors_map_forward  = new TreeMap<Integer,Integer> ();
+		m_border_colors_map_backward = new TreeMap<Integer,Integer> ();
+		m_center_colors_map_forward  = new TreeMap<Integer,Integer> ();
+		m_center_colors_map_backward = new TreeMap<Integer,Integer> ();
+
+		int i_color = 0;
+		for (Integer color : m_border_colors) {
+			m_border_colors_map_backward.put (i_color, color);
+			m_border_colors_map_forward.put (color, i_color);
+			i_color ++;
+		}
+
+		i_color = 0;
+		for (Integer color : m_center_colors) {
+			m_center_colors_map_backward.put (i_color, color);
+			m_center_colors_map_forward.put (color, i_color);
+			i_color ++;
+		}
+	}
+
+	/*
+	 * initialize arrays and maps containing diamond information
+	 */
+	protected void initDiamonds ()
+	{
+		if (m_bounded) {
+			m_border_diamonds_count = 2 * (m_grid_width + m_grid_height - 2);
+			m_center_diamonds_count = 2 * m_grid_width * m_grid_height - 3 * (m_grid_width + m_grid_height) + 4;
+		} else {
+			m_border_diamonds_count = 0;
+			m_center_diamonds_count = 2 * m_grid_width * m_grid_height - m_grid_width - m_grid_height;
+		}
+
+		m_border_diamonds = new ArrayList<Integer> (m_border_diamonds_count);
+		m_center_diamonds = new ArrayList<Integer> (m_center_diamonds_count);
+
+		m_border_diamonds_map_forward  = new TreeMap<Integer,Integer> ();
+		m_border_diamonds_map_backward = new TreeMap<Integer,Integer> ();
+		m_center_diamonds_map_forward  = new TreeMap<Integer,Integer> ();
+		m_center_diamonds_map_backward = new TreeMap<Integer,Integer> ();
+
+		// fill border diamonds
+		if (m_bounded) {
+			for (int i_x = 1; i_x < m_grid_width; i_x ++) {
+				m_border_diamonds.add (getLeftDiamondOfPlace (i_x, 0));
+				m_border_diamonds.add (getLeftDiamondOfPlace (i_x, m_grid_height - 1));
+			}
+
+			for (int i_y = 1; i_y < m_grid_height; i_y ++) {
+				m_border_diamonds.add (getTopDiamondOfPlace (0, i_y));
+				m_border_diamonds.add (getTopDiamondOfPlace (m_grid_width - 1, i_y));
+			}
+		}
+
+		// fill center diamonds with remaining diamonds
+		for (int i_diamond = 0; i_diamond < m_center_diamonds_count + m_border_diamonds_count; i_diamond ++) {
+			if (! m_border_diamonds.contains (i_diamond)) {
+				m_center_diamonds.add (i_diamond);
+			}
+		}
+
+		// map diamonds
+		for (int i_diamond = 0; i_diamond < m_border_diamonds_count; i_diamond ++) {
+			m_border_diamonds_map_backward.put (i_diamond, m_border_diamonds.get (i_diamond));
+			m_border_diamonds_map_forward.put (m_border_diamonds.get (i_diamond), i_diamond);
+		}
+
+		for (int i_diamond = 0; i_diamond < m_center_diamonds_count; i_diamond ++) {
+			m_center_diamonds_map_backward.put (i_diamond, m_center_diamonds.get (i_diamond));
+			m_center_diamonds_map_forward.put (m_center_diamonds.get (i_diamond), i_diamond);
 		}
 	}
 }

@@ -23,6 +23,8 @@ public class Piece
 	 */
 	protected int m_rotation;
 
+	protected int m_hash_code;
+
 	/*
 	 * constructor with all 4 colors given
 	 * --> are inserted directly
@@ -36,6 +38,8 @@ public class Piece
 		m_colors.add (1, color2);
 		m_colors.add (2, color3);
 		m_colors.add (3, color4);
+
+		m_hash_code = color1 + color2 + color3 + color4;
 	}
 
 	/*
@@ -129,5 +133,34 @@ public class Piece
 			case 6: return "+-------+";
 			default: return null;
 		}
+	}
+
+	public int hashCode ()
+	{
+		return m_hash_code;
+	}
+
+	public boolean equals (Object o)
+	{
+		// if null passed, check for null
+		if (o == null) {
+			if (this == null) return true;
+			return false;
+		}
+
+		// else check for type of other object
+		if (!(o instanceof Piece)) return false;
+
+		Piece other_piece = (Piece) o;
+
+		for (int start_color = 0; start_color < 4; start_color ++) {
+			for (int count = 0; count < 4; count ++) {
+				if (m_colors.get (count) != other_piece.m_colors.get (count)) break;
+
+				if (count == 3) return true;
+			}
+		}
+
+		return false;
 	}
 }
