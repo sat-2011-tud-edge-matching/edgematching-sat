@@ -24,6 +24,8 @@ CLASSES = \
 	edgematching/cnf/SATSolvable.java \
 	edgematching/cnf/Clause.java \
 	edgematching/cnf/CNFFormula.java \
+	edgematching/cnf/SATSolver.java \
+	edgematching/cnf/MiniSAT.java \
         edgematching/Main.java \
 
 
