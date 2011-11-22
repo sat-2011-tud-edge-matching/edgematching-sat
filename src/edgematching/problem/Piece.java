@@ -88,6 +88,48 @@ public class Piece
 	}
 
 	/*
+	 * return color left to 0 of border or corner piece
+	 */
+	public int getBorderColorLeft ()
+	{
+		for (int i = 0; i < 4; i++) {
+			if ((m_colors.get (i) != 0) && (m_colors.get ((i + 1) % 4) == 0)) {
+				return (m_colors.get (i));
+			}
+		}
+
+		return -1;
+	}
+
+	/*
+	 * return color right to 0 of border or corner piece
+	 */
+	public int getBorderColorRight ()
+	{
+		for (int i = 0; i < 4; i++) {
+			if ((m_colors.get (i) == 0) && (m_colors.get ((i + 1) % 4) != 0)) {
+				return (m_colors.get ((i + 1) % 4));
+			}
+		}
+
+		return -1;
+	}
+
+	/*
+	 * return color not next to 0 of border piece
+	 */
+	public int getBorderColorBottem ()
+	{
+		for (int i = 0; i < 4; i++) {
+			if (m_colors.get (i) == 0) {
+				return (m_colors.get ((i + 2) % 4));
+			}
+		}
+
+		return -1;
+	}
+
+	/*
 	 * get amount of the given color ...
 	 * needed for finding corner/border-pieces --> amount of 0-color
 	 */

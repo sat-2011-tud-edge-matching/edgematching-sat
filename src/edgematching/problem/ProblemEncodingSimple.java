@@ -88,9 +88,12 @@ public class ProblemEncodingSimple extends Problem
 		encodeCenter (formula);
 		encodeDiamonds (formula);
 
-		/*
-		 * here the encoding steps will be inserted ...
-		 */
+		if (m_bounded) {
+			encodeCornerDiamondCorrelation (formula);
+			encodeBorderDiamondCorrelation (formula);
+		}
+
+		encodeCenterDiamondCorrelation (formula);
 
 		return formula;
 	}
@@ -299,6 +302,147 @@ public class ProblemEncodingSimple extends Problem
 
 			formula.addClause (tempClause);
 		}
+	}
+
+	/*
+	 * encode correlation of placing a corner piece on a place and coloring connected diamonds
+	 */
+	protected void encodeCornerDiamondCorrelation (CNFFormula formula)
+	{
+		// directions are named watching the piece/place with zeroes at top
+		int topleft_corner     = convertXYToPlaceNumber (0, 0);
+		int topright_corner    = convertXYToPlaceNumber (m_grid_width - 1, 0);
+		int bottomleft_corner  = convertXYToPlaceNumber (0, m_grid_height - 1);
+		int bottomright_corner = convertXYToPlaceNumber (m_grid_width - 1, m_grid_height - 1);
+
+		int topleft_diamond_left      = m_border_diamonds_map_forward.get (getBottomDiamondOfPlace (0, 0));
+		int topleft_diamond_right     = m_border_diamonds_map_forward.get (getRightDiamondOfPlace (0, 0));
+		int topright_diamond_left     = m_border_diamonds_map_forward.get (getLeftDiamondOfPlace (m_grid_width - 1, 0));
+		int topright_diamond_right    = m_border_diamonds_map_forward.get (getBottomDiamondOfPlace (m_grid_width - 1, 0));
+		int bottomleft_diamond_left   = m_border_diamonds_map_forward.get (getRightDiamondOfPlace (0, m_grid_height - 1));
+		int bottomleft_diamond_right  = m_border_diamonds_map_forward.get (getTopDiamondOfPlace (0, m_grid_height - 1));
+		int bottomright_diamond_left  = m_border_diamonds_map_forward.get (getTopDiamondOfPlace (m_grid_width - 1, m_grid_height - 1));
+		int bottomright_diamond_right = m_border_diamonds_map_forward.get (getLeftDiamondOfPlace (m_grid_width - 1, m_grid_height - 1));
+
+		for (int i_piece : m_corner_piece_numbers) {
+			int color_left  = m_border_colors_map_forward.get (m_pieces.get (i_piece).getBorderColorLeft ());
+			int color_right = m_border_colors_map_forward.get (m_pieces.get (i_piece).getBorderColorRight ());
+
+			int[] tempArray00 = {- convertXijToSATVariable (i_piece, topleft_corner),
+				       convertYkcBorderToSATVariable (topleft_diamond_left, color_left)};
+			formula.addClause (tempArray00);
+			int[] tempArray01 = {- convertXijToSATVariable (i_piece, topleft_corner),
+				       convertYkcBorderToSATVariable (topleft_diamond_right, color_right)};
+			formula.addClause (tempArray01);
+
+			int[] tempArray02 = {- convertXijToSATVariable (i_piece, topright_corner),
+				       convertYkcBorderToSATVariable (topright_diamond_left, color_left)};
+			formula.addClause (tempArray02);
+			int[] tempArray03 = {- convertXijToSATVariable (i_piece, topright_corner),
+				       convertYkcBorderToSATVariable (topright_diamond_right, color_right)};
+			formula.addClause (tempArray03);
+
+			int[] tempArray04 = {- convertXijToSATVariable (i_piece, bottomleft_corner),
+				       convertYkcBorderToSATVariable (bottomleft_diamond_left, color_left)};
+			formula.addClause (tempArray04);
+			int[] tempArray05 = {- convertXijToSATVariable (i_piece, bottomleft_corner),
+				       convertYkcBorderToSATVariable (bottomleft_diamond_right, color_right)};
+			formula.addClause (tempArray05);
+
+			int[] tempArray06 = {- convertXijToSATVariable (i_piece, bottomright_corner),
+				       convertYkcBorderToSATVariable (bottomright_diamond_left, color_left)};
+			formula.addClause (tempArray06);
+			int[] tempArray07 = {- convertXijToSATVariable (i_piece, bottomright_corner),
+				       convertYkcBorderToSATVariable (bottomright_diamond_right, color_right)};
+			formula.addClause (tempArray07);
+		}
+	}
+
+	/*
+	 * encode correlation of placing a border piece on a place and coloring connected diamonds
+	 */
+	protected void encodeBorderDiamondCorrelation (CNFFormula formula)
+	{
+		for (int i_piece : m_border_piece_numbers) {
+			Piece currentPiece = m_pieces.get (i_piece);
+
+			int color_left   = m_border_colors_map_forward.get (currentPiece.getBorderColorLeft ());
+			int color_right  = m_border_colors_map_forward.get (currentPiece.getBorderColorRight ());
+			int color_bottom = m_center_colors_map_forward.get (currentPiece.getBorderColorBottem ());
+
+			// top and bottom row
+			for (int i_x = 1; i_x < m_grid_width - 1; i_x ++) {
+				int top_place    = convertXYToPlaceNumber (i_x, 0);
+				int bottom_place = convertXYToPlaceNumber (i_x, m_grid_height - 1);
+
+				int top_diamond_left      = m_border_diamonds_map_forward.get (getLeftDiamondOfPlace (i_x, 0));
+				int top_diamond_right     = m_border_diamonds_map_forward.get (getRightDiamondOfPlace (i_x, 0));
+				int top_diamond_bottom    = m_center_diamonds_map_forward.get (getBottomDiamondOfPlace (i_x, 0));
+				int bottom_diamond_left      = m_border_diamonds_map_forward.get (getRightDiamondOfPlace (i_x, m_grid_height - 1));
+				int bottom_diamond_right     = m_border_diamonds_map_forward.get (getLeftDiamondOfPlace (i_x, m_grid_height - 1));
+				int bottom_diamond_bottom    = m_center_diamonds_map_forward.get (getTopDiamondOfPlace (i_x, m_grid_height - 1));
+
+				int[] tempArray00 = {- convertXijToSATVariable (i_piece, top_place),
+						       convertYkcBorderToSATVariable (top_diamond_left, color_left)};
+				formula.addClause (tempArray00);
+				int[] tempArray01 = {- convertXijToSATVariable (i_piece, top_place),
+						       convertYkcBorderToSATVariable (top_diamond_right, color_right)};
+				formula.addClause (tempArray01);
+				int[] tempArray02 = {- convertXijToSATVariable (i_piece, top_place),
+						       convertYkcCenterToSATVariable (top_diamond_bottom, color_bottom)};
+				formula.addClause (tempArray02);
+
+				int[] tempArray10 = {- convertXijToSATVariable (i_piece, bottom_place),
+						       convertYkcBorderToSATVariable (bottom_diamond_left, color_left)};
+				formula.addClause (tempArray10);
+				int[] tempArray11 = {- convertXijToSATVariable (i_piece, bottom_place),
+						       convertYkcBorderToSATVariable (bottom_diamond_right, color_right)};
+				formula.addClause (tempArray11);
+				int[] tempArray12 = {- convertXijToSATVariable (i_piece, bottom_place),
+						       convertYkcCenterToSATVariable (bottom_diamond_bottom, color_bottom)};
+				formula.addClause (tempArray12);
+			}
+
+			// left and right column
+			for (int i_y = 1; i_y < m_grid_height - 1; i_y ++) {
+				int left_place    = convertXYToPlaceNumber (0, i_y);
+				int right_place = convertXYToPlaceNumber (m_grid_width - 1, i_y);
+
+				int left_diamond_left      = m_border_diamonds_map_forward.get (getBottomDiamondOfPlace (0, i_y));
+				int left_diamond_right     = m_border_diamonds_map_forward.get (getTopDiamondOfPlace (0, i_y));
+				int left_diamond_bottom    = m_center_diamonds_map_forward.get (getRightDiamondOfPlace (0, i_y));
+				int right_diamond_left      = m_border_diamonds_map_forward.get (getTopDiamondOfPlace (m_grid_width - 1, i_y));
+				int right_diamond_right     = m_border_diamonds_map_forward.get (getBottomDiamondOfPlace (m_grid_width - 1, i_y));
+				int right_diamond_bottom    = m_center_diamonds_map_forward.get (getLeftDiamondOfPlace (m_grid_width - 1, i_y));
+
+				int[] tempArray00 = {- convertXijToSATVariable (i_piece, left_place),
+						       convertYkcBorderToSATVariable (left_diamond_left, color_left)};
+				formula.addClause (tempArray00);
+				int[] tempArray01 = {- convertXijToSATVariable (i_piece, left_place),
+						       convertYkcBorderToSATVariable (left_diamond_right, color_right)};
+				formula.addClause (tempArray01);
+				int[] tempArray02 = {- convertXijToSATVariable (i_piece, left_place),
+						       convertYkcCenterToSATVariable (left_diamond_bottom, color_bottom)};
+				formula.addClause (tempArray02);
+
+				int[] tempArray10 = {- convertXijToSATVariable (i_piece, right_place),
+						       convertYkcBorderToSATVariable (right_diamond_left, color_left)};
+				formula.addClause (tempArray10);
+				int[] tempArray11 = {- convertXijToSATVariable (i_piece, right_place),
+						       convertYkcBorderToSATVariable (right_diamond_right, color_right)};
+				formula.addClause (tempArray11);
+				int[] tempArray12 = {- convertXijToSATVariable (i_piece, right_place),
+						       convertYkcCenterToSATVariable (right_diamond_bottom, color_bottom)};
+				formula.addClause (tempArray12);
+			}
+		}
+	}
+
+	protected void encodeCenterDiamondCorrelation (CNFFormula formula)
+	{
+		/*
+		 * encode correlation of center piece placing and diamond colors...
+		 */
 	}
 
 	/*
