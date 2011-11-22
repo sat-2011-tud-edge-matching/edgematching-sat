@@ -54,6 +54,12 @@ public class ProblemEncodingSimple extends Problem
 	protected Map<Integer,Integer> m_center_diamonds_map_backward;
 
 	/*
+	 * SAT-Start-values
+	 */
+	protected int m_sat_start_border_diamonds;
+	protected int m_sat_start_center_diamonds;
+
+	/*
 	 * simple constructor cloning the original problem
 	 */
 	public ProblemEncodingSimple (Problem problem)
@@ -80,6 +86,7 @@ public class ProblemEncodingSimple extends Problem
 		}
 		
 		encodeCenter (formula);
+		encodeDiamonds (formula);
 
 		/*
 		 * here the encoding steps will be inserted ...
@@ -253,6 +260,47 @@ public class ProblemEncodingSimple extends Problem
 
 	}
 
+	protected void encodeDiamonds (CNFFormula formula)
+	{
+		// each border diamond has a color
+		for (int i_diamond = 0; i_diamond < m_border_diamonds_count; i_diamond ++) {
+			Clause tempClause = new Clause (m_border_colors_count);
+
+			for (int i_color = 0; i_color < m_border_colors_count; i_color ++) {
+				tempClause.add (convertYkcBorderToSATVariable (i_diamond, i_color));
+
+				// each border diamond has just one color
+				for (int j_color = i_color + 1; j_color < m_border_colors_count; j_color ++) {
+					int[] tempArray = {- convertYkcBorderToSATVariable (i_diamond, i_color),
+							   - convertYkcBorderToSATVariable (i_diamond, j_color)};
+
+					formula.addClause (tempArray);
+				}
+			}
+
+			formula.addClause (tempClause);
+		}
+
+		// each center diamond has a color
+		for (int i_diamond = 0; i_diamond < m_center_diamonds_count; i_diamond ++) {
+			Clause tempClause = new Clause (m_center_colors_count);
+
+			for (int i_color = 0; i_color < m_center_colors_count; i_color ++) {
+				tempClause.add (convertYkcCenterToSATVariable (i_diamond, i_color));
+
+				// each center diamond has just one color
+				for (int j_color = i_color + 1; j_color < m_center_colors_count; j_color ++) {
+					int[] tempArray = {- convertYkcCenterToSATVariable (i_diamond, i_color),
+							   - convertYkcCenterToSATVariable (i_diamond, j_color)};
+
+					formula.addClause (tempArray);
+				}
+			}
+
+			formula.addClause (tempClause);
+		}
+	}
+
 	/*
 	 * ===============================================================================
 	 * helper functions ...
@@ -310,6 +358,16 @@ public class ProblemEncodingSimple extends Problem
 	protected final int getBottomDiamondOfPlace (int x, int y)
 	{
 		return ((2 * m_grid_width - 1) * y + x + m_grid_width - 1);
+	}
+
+	protected final int convertYkcBorderToSATVariable (int diamond, int color)
+	{
+		return (m_sat_start_border_diamonds + diamond * m_border_colors_count + color);
+	}
+
+	protected final int convertYkcCenterToSATVariable (int diamond, int color)
+	{
+		return (m_sat_start_center_diamonds + diamond * m_center_colors_count + color);
 	}
 
 	/*
@@ -456,5 +514,8 @@ public class ProblemEncodingSimple extends Problem
 			m_center_diamonds_map_backward.put (i_diamond, m_center_diamonds.get (i_diamond));
 			m_center_diamonds_map_forward.put (m_center_diamonds.get (i_diamond), i_diamond);
 		}
+
+		m_sat_start_border_diamonds = m_grid_width * m_grid_width * m_grid_height * m_grid_height + 1;
+		m_sat_start_center_diamonds = m_sat_start_border_diamonds + m_border_diamonds_count * m_border_colors_count;
 	}
 }

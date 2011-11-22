@@ -100,6 +100,8 @@ public class Problem
 	 */
 	public boolean specificationCorrect ()
 	{
+		if (m_signed) return false;
+
 		if (m_corner_pieces.size() != m_corner_pieces_count) return false;
 		if (m_border_pieces.size() != m_border_pieces_count) return false;
 		if (m_center_pieces.size() != m_center_pieces_count) return false;

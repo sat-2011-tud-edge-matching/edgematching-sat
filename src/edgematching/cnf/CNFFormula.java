@@ -17,6 +17,13 @@ public class CNFFormula
 	protected HashSet<Clause> m_clauses;
 	protected HashSet<Integer> m_variables;
 
+	/*
+	 * m_solution: literals mapped to true by solver
+	 * m_solved: true for satisfying solution
+	 */
+	protected SortedSet<Integer> m_solution;
+	protected boolean m_solved;
+
 	protected String m_comment;
 
 	/*
@@ -26,6 +33,7 @@ public class CNFFormula
 	{
 		m_clauses   = new HashSet<Clause> ();
 		m_variables = new HashSet<Integer> ();
+		m_solved    = false;
 	}
 
 	/*
@@ -36,6 +44,7 @@ public class CNFFormula
 		m_clauses   = new HashSet<Clause> ();
 		m_variables = new HashSet<Integer> ();
 		m_comment   = comment;
+		m_solved    = false;
 	}
 
 	/*
@@ -71,6 +80,24 @@ public class CNFFormula
 		m_variables.addAll (clause.getVariables ());
 
 		return true;
+	}
+
+	/*
+	 * true, if CNFFormula has a model
+	 */
+	public boolean isSolved ()
+	{
+		return m_solved;
+	}
+
+	/*
+	 * return the model of the CNFFormula
+	 */
+	public Set<Integer> m_solution ()
+	{
+		if (! m_solved) return null;
+
+		return m_solution;
 	}
 
 	/*
