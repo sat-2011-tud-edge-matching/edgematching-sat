@@ -60,6 +60,11 @@ public class ProblemEncodingSimple extends Problem
 	protected int m_sat_start_center_diamonds;
 
 	/*
+	 * Solution mapping
+	 */
+	protected Map<Integer,Integer> m_solution_diamond_color_map;
+
+	/*
 	 * simple constructor cloning the original problem
 	 */
 	public ProblemEncodingSimple (Problem problem)
@@ -113,12 +118,46 @@ public class ProblemEncodingSimple extends Problem
 			}
 		}
 
-		/*
-		 * here the solution of formula has to be decoded back ...
-		 */
+		m_solution_diamond_color_map = new TreeMap<Integer,Integer> ();
+		m_solution_grid              = new ArrayList<Piece> (m_grid_width * m_grid_height);
 
-		System.out.println ("Solution: ");
-		System.out.println (solution);
+		// decode literals
+		for (Integer i_literal : solution) {
+			if (i_literal < m_sat_start_border_diamonds) {
+				int place = convertSATVariableToPlace (i_literal);
+				int piece = convertSATVariableToPiece (i_literal);
+
+				m_solution_grid.add (place, m_pieces.get (piece));
+			} else if (i_literal < m_sat_start_center_diamonds) {
+				int diamond = convertSATVariableToYkcBorderDiamond (i_literal);
+				int color   = convertSATVariableToYkcBorderColor (i_literal);
+
+				m_solution_diamond_color_map.put (diamond, color);
+			} else {
+				int diamond = convertSATVariableToYkcCenterDiamond (i_literal);
+				int color   = convertSATVariableToYkcCenterColor (i_literal);
+
+				m_solution_diamond_color_map.put (diamond, color);
+			}
+		}
+		
+		rotatePieces ();
+	}
+
+	/*
+	 * rotate pieces according to diamond colors
+	 */
+	protected void rotatePieces ()
+	{
+		for (int i_x = 0; i_x < m_grid_width; i_x ++) {
+			for (int i_y = 0; i_y < m_grid_width; i_y ++) {
+				Piece current_piece = m_solution_grid.get (convertXYToPlaceNumber (i_x, i_y));
+
+				/*
+				 * TODO: ... rotation
+				 */
+			}
+		}
 	}
 
 	/*
@@ -522,9 +561,33 @@ public class ProblemEncodingSimple extends Problem
 		return (m_sat_start_border_diamonds + diamond * m_border_colors_count + color);
 	}
 
+	protected final int convertSATVariableToYkcBorderColor (int variable)
+	{
+		int color = (variable - m_sat_start_border_diamonds) % m_border_colors_count;
+		return (m_border_colors_map_backward.get (color));
+	}
+
+	protected final int convertSATVariableToYkcBorderDiamond (int variable)
+	{
+		int diamond = (variable - m_sat_start_border_diamonds) / m_border_colors_count;
+		return (m_border_diamonds_map_backward.get (diamond));
+	}
+
 	protected final int convertYkcCenterToSATVariable (int diamond, int color)
 	{
 		return (m_sat_start_center_diamonds + diamond * m_center_colors_count + color);
+	}
+
+	protected final int convertSATVariableToYkcCenterColor (int variable)
+	{
+		int color = (variable - m_sat_start_center_diamonds) % m_border_colors_count;
+		return (m_center_colors_map_backward.get (color));
+	}
+
+	protected final int convertSATVariableToYkcCenterDiamond (int variable)
+	{
+		int diamond = (variable - m_sat_start_center_diamonds) / m_border_colors_count;
+		return (m_center_diamonds_map_backward.get (diamond));
 	}
 
 	/*

@@ -29,7 +29,7 @@ public class Problem
 	/*
 	 * grid containing all pieces after solving the puzzle
 	 */
-	protected ArrayList<Piece> m_grid;
+	protected ArrayList<Piece> m_solution_grid;
 
 	/*
 	 * amount of pieces in each group
@@ -69,7 +69,7 @@ public class Problem
 		m_border_pieces = new ArrayList<Piece> (m_border_pieces_count);
 		m_center_pieces = new ArrayList<Piece> (m_center_pieces_count);
 
-		m_grid          = null;
+		m_solution_grid = null;
 
 		m_border_colors = new TreeSet<Integer> ();
 		m_center_colors = new TreeSet<Integer> ();
@@ -165,17 +165,17 @@ public class Problem
 	 */
 	public void printSolution ()
 	{
-		if (m_grid == null) {
+		if (m_solution_grid == null) {
 			System.out.println ("Problem is not yet solved...");
 			return;
 		}
 
-		for (int i_grid_line = 0; i_grid_line < m_grid_width; i_grid_line ++) {
+		for (int i_grid_line = 0; i_grid_line < m_grid_height; i_grid_line ++) {
 			for (int i_piece_line = 0; i_piece_line < Piece.getStringLineCount; i_piece_line ++) {
 				String currentOutputLine = new String ();
 
-				for (int i_column = 0; i_column < m_grid_height; i_column ++) {
-					currentOutputLine += m_grid.get (i_piece_line * m_grid_width + i_column).getStringLine (i_piece_line);
+				for (int i_column = 0; i_column < m_grid_width; i_column ++) {
+					currentOutputLine += m_solution_grid.get (i_grid_line * m_grid_width + i_column).getStringLine (i_piece_line);
 				}
 
 				System.out.println (currentOutputLine);

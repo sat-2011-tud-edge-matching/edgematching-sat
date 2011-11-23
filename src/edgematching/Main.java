@@ -39,6 +39,7 @@ public class Main
 		//System.out.println (cnfFormula.toDIMACS ());
 		MiniSAT minisat = new MiniSAT ("../solvers/minisat", "../files");
 		minisat.solveSAT (problemEncodingSimple);
+		problemEncodingSimple.printSolution ();
 	}
 
 	/*
