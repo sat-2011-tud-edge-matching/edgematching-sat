@@ -187,10 +187,10 @@ public class Piece
 				colors.add (1, cl2);
 				if (cl1 == cl4) { //2 - 1=3=4!=2
 					result = 2;
-				} else {          //4,5 - 1=3, 1!=2, 1!=4
+				} else {          //4,6 - 1=3, 1!=2, 1!=4
 					if (cl2 == cl4) { //4 - 1=3!=2=4
 						result = 4;
-					} else {          //5 - 1=3, 1!=2, 1!=4, 2!=4
+					} else {          //6 - 1=3, 1!=2, 1!=4, 2!=4
 						colors.add (2, cl4);
 						result = 5;
 					}
@@ -208,11 +208,12 @@ public class Piece
 				} else {          //2,5,6,7 - 1!=2, 1!=3, 1!=4
 					if (cl2 == cl3) { //2,5 - 2=3, 1!=2, 1!=4
 						colors.add (0, cl2);
-						colors.add (1, cl1);
 						if (cl2 == cl4) { //2 - 2=3=4!=1
+							colors.add (1, cl1);
 							result = 2;
 						} else {          //5 - 2=3, 2!=1, 2!=4, 1!=4
-							colors.add (2, cl4);
+							colors.add (1, cl4);
+							colors.add (2, cl1);
 							result = 5;
 						}
 					} else {          //5,6,7 - 1!=2, 1!=3, 1!=4, 2!=3

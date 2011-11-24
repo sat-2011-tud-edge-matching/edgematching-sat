@@ -147,15 +147,20 @@ public class Problem
 		System.out.println ("Height:  " + m_grid_height);
 		System.out.println ("Pieces: ");
 
+		ArrayList<Integer> temp_a_l = new ArrayList<Integer> (4);
+
 		for (Piece i_piece : m_corner_pieces) {
+			System.out.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
 			System.out.println (i_piece);
 		}
 
 		for (Piece i_piece : m_border_pieces) {
+			System.out.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
 			System.out.println (i_piece);
 		}
 
 		for (Piece i_piece : m_center_pieces) {
+			System.out.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
 			System.out.println (i_piece);
 		}
 	}
