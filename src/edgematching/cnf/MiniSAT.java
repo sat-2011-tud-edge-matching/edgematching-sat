@@ -130,7 +130,11 @@ public class MiniSAT
 			Scanner literal_scanner = new Scanner (solution_line);
 
 			while (literal_scanner.hasNextInt ()) {
-				solution_literals.add (literal_scanner.nextInt ());
+				int current_literal = literal_scanner.nextInt ();
+				if (current_literal != 0)
+					solution_literals.add (current_literal);
+				else
+					break;
 			}
 
 			formula.setSolution (solution_literals);
