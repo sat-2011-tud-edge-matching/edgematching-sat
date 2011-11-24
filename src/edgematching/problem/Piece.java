@@ -60,7 +60,7 @@ public class Piece
 	 */
 	public int getColor (int index)
 	{
-		return m_colors.get((index - m_rotation) % 4);
+		return m_colors.get((index + 4 - m_rotation) % 4);
 	}
 
 	/*

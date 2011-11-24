@@ -37,7 +37,7 @@ public class Main
 		//CNFFormula cnfFormula = problemEncodingSimple.encodeToSAT ();
 		
 		//System.out.println (cnfFormula.toDIMACS ());
-		MiniSAT minisat = new MiniSAT ("../solvers/minisat", "../files");
+		MiniSAT minisat = new MiniSAT ("minisat", "../files");
 		minisat.solveSAT (problemEncodingSimple);
 		problemEncodingSimple.printSolution ();
 	}

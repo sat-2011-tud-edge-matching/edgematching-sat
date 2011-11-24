@@ -149,13 +149,28 @@ public class ProblemEncodingSimple extends Problem
 	 */
 	protected void rotatePieces ()
 	{
+		System.out.println ("rotating pieces ...");
 		for (int i_x = 0; i_x < m_grid_width; i_x ++) {
 			for (int i_y = 0; i_y < m_grid_width; i_y ++) {
 				Piece current_piece = m_solution_grid.get (convertXYToPlaceNumber (i_x, i_y));
+				if (current_piece == null) continue;
 
-				/*
-				 * TODO: ... rotation
-				 */
+
+				int color_top    = (i_y > 0                    ? m_solution_diamond_color_map.get (getTopDiamondOfPlace (i_x, i_y))    : -1);
+				int color_bottom = (i_y < m_grid_height - 1    ? m_solution_diamond_color_map.get (getBottomDiamondOfPlace (i_x, i_y)) : -1);
+				int color_left   = (i_x > 0                    ? m_solution_diamond_color_map.get (getLeftDiamondOfPlace (i_x, i_y))   : -1);
+				int color_right  = (i_x < m_grid_width - 1     ? m_solution_diamond_color_map.get (getRightDiamondOfPlace (i_x, i_y))  : -1);
+
+				for (int i_rotation = 0; i_rotation < 4; i_rotation ++) {
+					current_piece.setRotation (i_rotation);
+
+					if ((color_top    >= 0) && (color_top    != current_piece.getColor (0))) continue;
+					if ((color_right  >= 0) && (color_right  != current_piece.getColor (1))) continue;
+					if ((color_bottom >= 0) && (color_bottom != current_piece.getColor (2))) continue;
+					if ((color_left   >= 0) && (color_left   != current_piece.getColor (3))) continue;
+					
+					break;
+				}
 			}
 		}
 	}
@@ -580,13 +595,13 @@ public class ProblemEncodingSimple extends Problem
 
 	protected final int convertSATVariableToYkcCenterColor (int variable)
 	{
-		int color = (variable - m_sat_start_center_diamonds) % m_border_colors_count;
+		int color = (variable - m_sat_start_center_diamonds) % m_center_colors_count;
 		return (m_center_colors_map_backward.get (color));
 	}
 
 	protected final int convertSATVariableToYkcCenterDiamond (int variable)
 	{
-		int diamond = (variable - m_sat_start_center_diamonds) / m_border_colors_count;
+		int diamond = (variable - m_sat_start_center_diamonds) / m_center_colors_count;
 		return (m_center_diamonds_map_backward.get (diamond));
 	}
 
