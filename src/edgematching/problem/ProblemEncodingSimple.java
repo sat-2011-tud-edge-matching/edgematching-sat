@@ -505,11 +505,76 @@ public class ProblemEncodingSimple extends Problem
 		}
 	}
 
+	/*
+	 * encode correlation of center piece placement and center diamonds color
+	 */
 	protected void encodeCenterDiamondCorrelation (CNFFormula formula)
 	{
-		/*
-		 * encode correlation of center piece placing and diamond colors...
-		 */
+		int x_0;
+		int y_0;
+		int x_end;
+		int y_end;
+
+		ArrayList<Integer> current_colors = new ArrayList<Integer> (4);
+
+		// bounds of center pieces
+		if (m_bounded) {
+			x_0   = 1;
+			y_0   = 1;
+			x_end = m_grid_width  - 2;
+			y_end = m_grid_height - 2;
+		} else {
+			x_0   = 0;
+			y_0   = 0;
+			x_end = m_grid_width  - 1;
+			y_end = m_grid_height - 1;
+		}
+
+		// encode each piece
+		for (int i_piece : m_center_piece_numbers) {
+			Piece current_piece = m_pieces.get (i_piece);
+			// classification
+			int   current_type  = current_piece.getClassification (current_colors);
+
+			// current colors for sat
+			for (Integer i_color : current_colors) {
+				i_color = m_center_colors_map_forward.get (i_color);
+			}
+
+			// for each position
+			for (int i_x = x_0; i_x <= x_end; i_x ++) {
+				for (int i_y = y_0; i_y <= y_end; i_y ++) {
+					int current_place           = convertXYToPlaceNumber (i_x, i_y);
+					// SAT-Variable for current placement
+					int current_piece_placement = convertXijToSATVariable (i_piece, current_place);
+
+					int diamond_left   = (i_x > 0                 ? m_center_diamonds_map_forward.get (getLeftDiamondOfPlace   (i_x, i_y)) : -1);;
+					int diamond_right  = (i_x < m_grid_width - 1  ? m_center_diamonds_map_forward.get (getRightDiamondOfPlace  (i_x, i_y)) : -1);;
+					int diamond_top    = (i_y > 0                 ? m_center_diamonds_map_forward.get (getTopDiamondOfPlace    (i_x, i_y)) : -1);;
+					int diamond_bottom = (i_y < m_grid_height - 1 ? m_center_diamonds_map_forward.get (getBottomDiamondOfPlace (i_x, i_y)) : -1);;
+
+					int[] temp_array;
+
+					switch (current_type) {
+						case 1:
+							break;
+						case 2:
+							break;
+						case 3:
+							break;
+						case 4:
+							break;
+						case 5:
+							break;
+						case 6:
+							break;
+						case 7:
+							break;
+					}
+				}
+			}
+
+		}
 	}
 
 	/*

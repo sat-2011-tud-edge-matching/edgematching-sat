@@ -145,6 +145,105 @@ public class Piece
 	}
 
 	/*
+	 * get classification of the piece according to paper by Marijn J.H. Heule
+	 * writes colors in descending order to color1 to 4
+	 */
+	public int getClassification (ArrayList<Integer> colors)
+	{
+		int result = 0;
+
+		colors.clear ();
+
+		int cl1 = m_colors.get (0);
+		int cl2 = m_colors.get (1);
+		int cl3 = m_colors.get (2);
+		int cl4 = m_colors.get (3);
+
+		if (cl1 == cl2) { //1,2,3,5 - 1=2
+			colors.add (0, cl1);
+			if (cl1 == cl3) { //1,2 - 1=2=3
+				if (cl1 == cl4) { //1 - 1=2=3=4
+					result = 1;
+				} else {          //2 - 1=2=3!=4
+					colors.add (1, cl4);
+					result = 2;
+				}
+			} else {          //2,3,5 - 1=2!=3
+				colors.add (1, cl3);
+				if (cl3 == cl4) { //3 - 1=2!=3=4
+					result = 3;
+				} else {          //2,5 - 1=2!=3, 3!=4
+					if (cl1 == cl4) { //2 - 1=2=4!=3
+						result = 2;
+					} else {          //5 - 1=2!=3, 3!=4, 1!=4
+						colors.add (2, cl4);
+						result = 5;
+					}
+				}
+			}
+		} else {          //2,3,4,5,6,7 - 1!=2
+			if (cl1 == cl3) { //2,4,6 - 1=3!=2
+				colors.add (0, cl1);
+				colors.add (1, cl2);
+				if (cl1 == cl4) { //2 - 1=3=4!=2
+					result = 2;
+				} else {          //4,5 - 1=3, 1!=2, 1!=4
+					if (cl2 == cl4) { //4 - 1=3!=2=4
+						result = 4;
+					} else {          //5 - 1=3, 1!=2, 1!=4, 2!=4
+						colors.add (2, cl4);
+						result = 5;
+					}
+				}
+			} else {          //2,3,5,6,7 - 1!=2, 1!=3
+				if (cl1 == cl4) { //3,5 - 1=4, 1!=2, 1!=3
+					colors.add (0, cl1);
+					colors.add (1, cl2);
+					if (cl2 == cl3) { //3 - 1=4!=2=3
+						result = 3;
+					} else {          //5 - 1=4, 1!=2, 1!=3, 2!=3
+						colors.add (2, cl3);
+						result = 5;
+					}
+				} else {          //2,5,6,7 - 1!=2, 1!=3, 1!=4
+					if (cl2 == cl3) { //2,5 - 2=3, 1!=2, 1!=4
+						colors.add (0, cl2);
+						colors.add (1, cl1);
+						if (cl2 == cl4) { //2 - 2=3=4!=1
+							result = 2;
+						} else {          //5 - 2=3, 2!=1, 2!=4, 1!=4
+							colors.add (2, cl4);
+							result = 5;
+						}
+					} else {          //5,6,7 - 1!=2, 1!=3, 1!=4, 2!=3
+						if (cl2 == cl4) { //6 - 2=4, 2!=1, 2!=3, 1!=3
+							colors.add (0, cl2);
+							colors.add (1, cl1);
+							colors.add (2, cl3);
+							result = 6;
+						} else {          //5,7 - 1!=2, 1!=3, 1!=4, 2!=3, 2!=4
+							if (cl3 == cl4) { //5 - 3=4, 3!=1, 3!=2, 1!=2
+								colors.add (0, cl3);
+								colors.add (1, cl1);
+								colors.add (2, cl2);
+								result = 5;
+							} else {          //7 - all 4 different
+								colors.add (0, cl1);
+								colors.add (1, cl2);
+								colors.add (2, cl3);
+								colors.add (3, cl4);
+								result = 7;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/*
 	 * converts piece to an output-String (line-by-line)
 	 */
 	public String toString ()
