@@ -294,10 +294,12 @@ public class Piece
 		if (!(o instanceof Piece)) return false;
 
 		Piece other_piece = (Piece) o;
+		
+		if (m_hash_code != other_piece.m_hash_code) return false;
 
 		for (int start_color = 0; start_color < 4; start_color ++) {
 			for (int count = 0; count < 4; count ++) {
-				if (m_colors.get (count) != other_piece.m_colors.get (count)) break;
+				if (m_colors.get (count) != other_piece.m_colors.get ((start_color + count) % 4)) break;
 
 				if (count == 3) return true;
 			}

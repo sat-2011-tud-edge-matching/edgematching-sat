@@ -131,6 +131,7 @@ public class Problem
 					return false;
 			}
 		} else {
+			piece.insertAllColors (m_center_colors);
 			return m_center_pieces.add (piece);
 		}
 	}
