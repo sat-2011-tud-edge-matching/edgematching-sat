@@ -55,6 +55,14 @@ public class Piece
 		return m_rotation;
 	}
 
+	void setColor (int index, int color)
+	{
+		int old_color = m_colors.get ((index + 4 - m_rotation) % 4);
+		m_colors.set((index + 4 - m_rotation) % 4, color);
+
+		m_hash_code -= old_color;
+		m_hash_code += color;
+	}
 	/*
 	 * get color at position wrt current rotation
 	 */
