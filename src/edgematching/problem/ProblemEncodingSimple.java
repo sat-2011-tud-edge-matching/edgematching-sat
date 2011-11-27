@@ -537,8 +537,14 @@ public class ProblemEncodingSimple extends Problem
 			int   current_type  = current_piece.getClassification (current_colors);
 
 			// current colors for sat
+			/*
 			for (Integer i_color : current_colors) {
 				i_color = m_center_colors_map_forward.get (i_color);
+			}
+			*/
+			for (int i = 0; i < current_colors.size (); i++) {
+				int mapped_color = m_center_colors_map_forward.get (current_colors.get (i));
+				current_colors.set (i, mapped_color);
 			}
 
 			// for each position
@@ -911,13 +917,160 @@ public class ProblemEncodingSimple extends Problem
 			formula.addClause (temp_array);
 		}
 
-		// TODO: additional clauses ...
+		// positive rotation clauses
+		if ((diamond_top >= 0) && (diamond_right >= 0) && (diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				convertYkcCenterToSATVariable (diamond_top,    colors.get (1)),
+				convertYkcCenterToSATVariable (diamond_right,  colors.get (1)),
+				convertYkcCenterToSATVariable (diamond_bottom, colors.get (1)),
+				convertYkcCenterToSATVariable (diamond_left,   colors.get (1))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_top >= 0) && (diamond_right >= 0) && (diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				convertYkcCenterToSATVariable (diamond_top,    colors.get (2)),
+				convertYkcCenterToSATVariable (diamond_right,  colors.get (2)),
+				convertYkcCenterToSATVariable (diamond_bottom, colors.get (2)),
+				convertYkcCenterToSATVariable (diamond_left,   colors.get (2))};
+			formula.addClause (temp_array);
+		}
 	}
 
 	protected final void encodeCenterDiamondCorrelationType7 (CNFFormula formula, int xij_variable, int diamond_left, int diamond_right, int diamond_top, int diamond_bottom, ArrayList<Integer> colors)
 	{
+		if ((diamond_left >= 0) && (diamond_top >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_left,   colors.get (0)),
+				 convertYkcCenterToSATVariable (diamond_top,    colors.get (1))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_top >= 0) && (diamond_right >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_top,    colors.get (0)),
+				 convertYkcCenterToSATVariable (diamond_right,  colors.get (1))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_right >= 0) && (diamond_bottom >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_right,  colors.get (0)),
+				 convertYkcCenterToSATVariable (diamond_bottom, colors.get (1))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_bottom, colors.get (0)),
+				 convertYkcCenterToSATVariable (diamond_left,   colors.get (1))};
+			formula.addClause (temp_array);
+		}
 
-		// TODO ...
+		if ((diamond_left >= 0) && (diamond_top >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_left,   colors.get (1)),
+				 convertYkcCenterToSATVariable (diamond_top,    colors.get (2))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_top >= 0) && (diamond_right >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_top,    colors.get (1)),
+				 convertYkcCenterToSATVariable (diamond_right,  colors.get (2))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_right >= 0) && (diamond_bottom >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_right,  colors.get (1)),
+				 convertYkcCenterToSATVariable (diamond_bottom, colors.get (2))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_bottom, colors.get (1)),
+				 convertYkcCenterToSATVariable (diamond_left,   colors.get (2))};
+			formula.addClause (temp_array);
+		}
+
+		if ((diamond_left >= 0) && (diamond_top >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_left,   colors.get (2)),
+				 convertYkcCenterToSATVariable (diamond_top,    colors.get (3))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_top >= 0) && (diamond_right >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_top,    colors.get (2)),
+				 convertYkcCenterToSATVariable (diamond_right,  colors.get (3))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_right >= 0) && (diamond_bottom >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_right,  colors.get (2)),
+				 convertYkcCenterToSATVariable (diamond_bottom, colors.get (3))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_bottom, colors.get (2)),
+				 convertYkcCenterToSATVariable (diamond_left,   colors.get (3))};
+			formula.addClause (temp_array);
+		}
+
+		if ((diamond_left >= 0) && (diamond_top >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_left,   colors.get (3)),
+				 convertYkcCenterToSATVariable (diamond_top,    colors.get (0))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_top >= 0) && (diamond_right >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_top,    colors.get (3)),
+				 convertYkcCenterToSATVariable (diamond_right,  colors.get (0))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_right >= 0) && (diamond_bottom >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_right,  colors.get (3)),
+				 convertYkcCenterToSATVariable (diamond_bottom, colors.get (0))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				-convertYkcCenterToSATVariable (diamond_bottom, colors.get (3)),
+				 convertYkcCenterToSATVariable (diamond_left,   colors.get (0))};
+			formula.addClause (temp_array);
+		}
+
+		// positive rotation clauses
+		if ((diamond_top >= 0) && (diamond_right >= 0) && (diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				convertYkcCenterToSATVariable (diamond_top,    colors.get (0)),
+				convertYkcCenterToSATVariable (diamond_right,  colors.get (0)),
+				convertYkcCenterToSATVariable (diamond_bottom, colors.get (0)),
+				convertYkcCenterToSATVariable (diamond_left,   colors.get (0))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_top >= 0) && (diamond_right >= 0) && (diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				convertYkcCenterToSATVariable (diamond_top,    colors.get (1)),
+				convertYkcCenterToSATVariable (diamond_right,  colors.get (1)),
+				convertYkcCenterToSATVariable (diamond_bottom, colors.get (1)),
+				convertYkcCenterToSATVariable (diamond_left,   colors.get (1))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_top >= 0) && (diamond_right >= 0) && (diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				convertYkcCenterToSATVariable (diamond_top,    colors.get (2)),
+				convertYkcCenterToSATVariable (diamond_right,  colors.get (2)),
+				convertYkcCenterToSATVariable (diamond_bottom, colors.get (2)),
+				convertYkcCenterToSATVariable (diamond_left,   colors.get (2))};
+			formula.addClause (temp_array);
+		}
+		if ((diamond_top >= 0) && (diamond_right >= 0) && (diamond_bottom >= 0) && (diamond_left >= 0)) {
+			int[] temp_array = {- xij_variable,
+				convertYkcCenterToSATVariable (diamond_top,    colors.get (3)),
+				convertYkcCenterToSATVariable (diamond_right,  colors.get (3)),
+				convertYkcCenterToSATVariable (diamond_bottom, colors.get (3)),
+				convertYkcCenterToSATVariable (diamond_left,   colors.get (3))};
+			formula.addClause (temp_array);
+		}
 	}
 
 	/*
