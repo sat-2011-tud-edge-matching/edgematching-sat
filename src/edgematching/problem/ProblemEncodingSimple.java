@@ -149,7 +149,7 @@ public class ProblemEncodingSimple extends Problem
 	 */
 	protected void rotatePieces ()
 	{
-		System.out.println ("rotating pieces ...");
+		System.err.println ("rotating pieces ...");
 		for (int i_x = 0; i_x < m_grid_width; i_x ++) {
 			for (int i_y = 0; i_y < m_grid_width; i_y ++) {
 				Piece current_piece = m_solution_grid.get (convertXYToPlaceNumber (i_x, i_y));

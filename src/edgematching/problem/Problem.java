@@ -141,28 +141,28 @@ public class Problem
 	 */
 	public void printProblem ()
 	{
-		System.out.println ("Edge-Matching Problem:");
-		System.out.println ("Bounded: " + (m_bounded ? "yes" : "no"));
-		System.out.println ("Signed:  " + (m_signed  ? "yes" : "no"));
-		System.out.println ("Width:   " + m_grid_width);
-		System.out.println ("Height:  " + m_grid_height);
-		System.out.println ("Pieces: ");
+		System.err.println ("Edge-Matching Problem:");
+		System.err.println ("Bounded: " + (m_bounded ? "yes" : "no"));
+		System.err.println ("Signed:  " + (m_signed  ? "yes" : "no"));
+		System.err.println ("Width:   " + m_grid_width);
+		System.err.println ("Height:  " + m_grid_height);
+		System.err.println ("Pieces: ");
 
 		ArrayList<Integer> temp_a_l = new ArrayList<Integer> (4);
 
 		for (Piece i_piece : m_corner_pieces) {
-			System.out.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
-			System.out.println (i_piece);
+			System.err.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
+			System.err.println (i_piece);
 		}
 
 		for (Piece i_piece : m_border_pieces) {
-			System.out.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
-			System.out.println (i_piece);
+			System.err.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
+			System.err.println (i_piece);
 		}
 
 		for (Piece i_piece : m_center_pieces) {
-			System.out.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
-			System.out.println (i_piece);
+			System.err.println ("Piece type: " + i_piece.getClassification (temp_a_l) + ", colors: " + temp_a_l);
+			System.err.println (i_piece);
 		}
 	}
 
@@ -172,7 +172,7 @@ public class Problem
 	public void printSolution ()
 	{
 		if (m_solution_grid == null) {
-			System.out.println ("Problem is not yet solved...");
+			System.err.println ("Problem is not yet solved...");
 			return;
 		}
 

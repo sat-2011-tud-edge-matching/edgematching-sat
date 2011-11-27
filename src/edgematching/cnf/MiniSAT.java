@@ -63,17 +63,19 @@ public class MiniSAT
 			BufferedReader error_stream_reader  = new BufferedReader (new InputStreamReader(mini_sat_process.getErrorStream()));
 			BufferedReader output_stream_reader = new BufferedReader (new InputStreamReader(mini_sat_process.getInputStream()));
 			
-			String current_error_line  = error_stream_reader.readLine ();
 			String current_output_line = output_stream_reader.readLine ();
 
-			while (current_error_line != null) {
-				System.out.println (current_error_line);
-				current_error_line = error_stream_reader.readLine ();
+			while (current_output_line != null) {
+				System.err.println (current_output_line);
+				current_output_line = output_stream_reader.readLine ();
 			}
 
-			while (current_output_line != null) {
-				System.out.println (current_output_line);
-				current_output_line = output_stream_reader.readLine ();
+
+			String current_error_line  = error_stream_reader.readLine ();
+
+			while (current_error_line != null) {
+				System.err.println (current_error_line);
+				current_error_line = error_stream_reader.readLine ();
 			}
 
 			error_stream_reader.close ();

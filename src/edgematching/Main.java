@@ -29,7 +29,7 @@ public class Main
 	public static void main (String[] args) 
 	{
 		parseArguments (args);
-		System.out.println ("Reading input file ...");
+		System.err.println ("Reading input file ...");
 		readProblem ();
 		m_problem.printProblem ();
 
@@ -52,7 +52,7 @@ public class Main
 		if (args.length > 0) {
 			m_filename = args[0];
 		} else {
-			System.out.println ("No input file specified");
+			System.err.println ("No input file specified");
 			System.exit (1);
 		}
 	}
@@ -68,12 +68,12 @@ public class Main
 		m_problem = temp_reader.getProblem();
 
 		if (m_problem == null) {
-			System.out.println ("An error occured during parsing the input file!");
+			System.err.println ("An error occured during parsing the input file!");
 			System.exit (1);
 		}
 
 		if (! m_problem.specificationCorrect ()) {
-			System.out.println ("Not a valid Edge Matching specification!");
+			System.err.println ("Not a valid Edge Matching specification!");
 			System.exit (1);
 		}
 	}

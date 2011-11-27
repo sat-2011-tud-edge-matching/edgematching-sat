@@ -55,7 +55,7 @@ public class Piece
 		return m_rotation;
 	}
 
-	void setColor (int index, int color)
+	public void setColor (int index, int color)
 	{
 		int old_color = m_colors.get ((index + 4 - m_rotation) % 4);
 		m_colors.set((index + 4 - m_rotation) % 4, color);
@@ -200,7 +200,7 @@ public class Piece
 						result = 4;
 					} else {          //6 - 1=3, 1!=2, 1!=4, 2!=4
 						colors.add (2, cl4);
-						result = 5;
+						result = 6;
 					}
 				}
 			} else {          //2,3,5,6,7 - 1!=2, 1!=3
@@ -247,6 +247,17 @@ public class Piece
 					}
 				}
 			}
+		}
+
+		return result;
+	}
+
+	public String toProblemString ()
+	{
+		String result = Integer.toString (getColor (0));
+
+		for (int i = 1; i < 4; i++) {
+			result += " " + getColor (i);
 		}
 
 		return result;
