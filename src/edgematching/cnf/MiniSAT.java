@@ -70,7 +70,6 @@ public class MiniSAT
 				current_output_line = output_stream_reader.readLine ();
 			}
 
-
 			String current_error_line  = error_stream_reader.readLine ();
 
 			while (current_error_line != null) {
