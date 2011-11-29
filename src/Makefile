@@ -89,7 +89,7 @@ clean:
 #
 
 $(OUTPUTJAR) : $(CLASSES:.java=.class)
-	jar cfm $(OUTPUTJAR) $(MANIFEST) $(CLASSES:.java=.class)
+	jar cvfm $(OUTPUTJAR) $(MANIFEST) $(CLASSES:.java=.class)
 
 jar: $(OUTPUTJAR)
 
