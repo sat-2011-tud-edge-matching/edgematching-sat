@@ -27,6 +27,7 @@ CLASSES = \
 	edgematching/cnf/CNFFormula.java \
 	edgematching/cnf/SATSolver.java \
 	edgematching/cnf/MiniSAT.java \
+	edgematching/cnf/PicoSAT.java \
         edgematching/Main.java \
         edgematching/Generate.java \
 
