@@ -20,6 +20,7 @@ CLASSES = \
         edgematching/problem/Piece.java \
         edgematching/problem/Problem.java \
         edgematching/problem/ProblemEncodingSimple.java \
+        edgematching/problem/ProblemEncodingSimpleRedundant.java \
         edgematching/problem/Reader.java \
 	edgematching/cnf/SATSolvable.java \
 	edgematching/cnf/Clause.java \
