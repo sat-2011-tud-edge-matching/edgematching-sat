@@ -5,6 +5,9 @@ import edgematching.cnf.*;
 
 /*
  * extends Problem, so that it can be encoded by the simple encoding ...
+ *
+ * encoding from the paper "Solving edge-matching problems with satisfiability solvers"
+ * by Marijn J. H. Heule
  */
 public class ProblemEncodingSimple extends Problem
 	implements SATSolvable
