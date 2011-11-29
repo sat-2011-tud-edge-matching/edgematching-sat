@@ -72,11 +72,19 @@ public class Piece
 	}
 
 	/*
-	 * inserts colors of this piece into a given set of colors
+	 * removes colors of this piece from a given collection of colors
 	 */
-	public void insertAllColors (Set<Integer> colorSet)
+	public void removeAllColorsFrom (Collection<Integer> colorCollection)
 	{
-		colorSet.addAll (m_colors);
+		colorCollection.removeAll (m_colors);
+	}
+
+	/*
+	 * inserts colors of this piece into a given collection of colors
+	 */
+	public void insertAllColors (Collection<Integer> colorCollection)
+	{
+		colorCollection.addAll (m_colors);
 	}
 
 	/*

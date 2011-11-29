@@ -35,7 +35,24 @@ public class ProblemEncodingSimpleRedundant extends ProblemEncodingSimple
 
 	protected void encodeForbiddenColorClauses (CNFFormula formula)
 	{
+		// center colors
+		TreeMap<Integer,HashSet<Integer>> forbidden_color_sets_center = new TreeMap<Integer,HashSet<Integer>> ();
 
+		for (int i_piece : m_center_piece_numbers) {
+			Piece current_piece = m_pieces.get (i_piece);
+
+			HashSet<Integer> forbidden_colors = new HashSet<Integer> ();
+
+			forbidden_colors.addAll (m_center_colors_map_forward.keySet ());
+
+			current_piece.removeAllColorsFrom (forbidden_colors);
+
+			forbidden_color_sets_center.put (i_piece, forbidden_colors);
+		}
+
+		for (int i_place : m_center_place_numbers) {
+
+		}
 	}
 
 	protected void encodeExplicitOneOnOneMappingPlaces (CNFFormula formula)

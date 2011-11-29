@@ -562,7 +562,6 @@ public class ProblemEncodingSimple extends Problem
 					int diamond_top    = (i_y > 0                 ? m_center_diamonds_map_forward.get (getTopDiamondOfPlace    (i_x, i_y)) : -1);;
 					int diamond_bottom = (i_y < m_grid_height - 1 ? m_center_diamonds_map_forward.get (getBottomDiamondOfPlace (i_x, i_y)) : -1);;
 
-					// TODO: enconding 
 					switch (current_type) {
 						case 1:
 							encodeCenterDiamondCorrelationType1 (formula, current_piece_placement, diamond_left, diamond_right, diamond_top, diamond_bottom, current_colors);
