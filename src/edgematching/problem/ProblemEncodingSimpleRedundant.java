@@ -27,7 +27,8 @@ public class ProblemEncodingSimpleRedundant extends ProblemEncodingSimple
 		CNFFormula formula = super.encodeToSAT ();
 
 		encodeForbiddenColorClauses (formula);
-		encodeExplicitOneOnOneMapping (formula);
+		encodeExplicitOneOnOneMappingPieces (formula);
+		encodeExplicitOneOnOneMappingPlaces (formula);
 
 		return formula;
 	}
@@ -37,10 +38,87 @@ public class ProblemEncodingSimpleRedundant extends ProblemEncodingSimple
 
 	}
 
-	protected void encodeExplicitOneOnOneMapping (CNFFormula formula)
+	protected void encodeExplicitOneOnOneMappingPlaces (CNFFormula formula)
 	{
-		// center pieces
+		// corner places 
+		for (ListIterator<Integer> i_first_place = m_corner_place_numbers.listIterator (); i_first_place.hasNext (); ) {
+			int first_place= i_first_place.next ();
 
+			for (ListIterator<Integer> i_second_place = m_corner_place_numbers.listIterator (i_first_place.nextIndex ()); i_second_place.hasNext (); ) {
+				int second_place = i_second_place.next ();
+
+				for (Integer piece: m_corner_piece_numbers) {
+					int[] tempArray = { - convertXijToSATVariable (piece, first_place), -convertXijToSATVariable (piece, second_place)};
+
+					formula.addClause (tempArray);
+				}
+			}
+		}
+
+		// border places 
+		for (ListIterator<Integer> i_first_place = m_border_place_numbers.listIterator (); i_first_place.hasNext (); ) {
+			int first_place= i_first_place.next ();
+
+			for (ListIterator<Integer> i_second_place = m_border_place_numbers.listIterator (i_first_place.nextIndex ()); i_second_place.hasNext (); ) {
+				int second_place = i_second_place.next ();
+
+				for (Integer piece: m_border_piece_numbers) {
+					int[] tempArray = { - convertXijToSATVariable (piece, first_place), -convertXijToSATVariable (piece, second_place)};
+
+					formula.addClause (tempArray);
+				}
+			}
+		}
+
+		// center places 
+		for (ListIterator<Integer> i_first_place = m_center_place_numbers.listIterator (); i_first_place.hasNext (); ) {
+			int first_place= i_first_place.next ();
+
+			for (ListIterator<Integer> i_second_place = m_center_place_numbers.listIterator (i_first_place.nextIndex ()); i_second_place.hasNext (); ) {
+				int second_place = i_second_place.next ();
+
+				for (Integer piece: m_center_piece_numbers) {
+					int[] tempArray = { - convertXijToSATVariable (piece, first_place), -convertXijToSATVariable (piece, second_place)};
+
+					formula.addClause (tempArray);
+				}
+			}
+		}
+	}
+
+	protected void encodeExplicitOneOnOneMappingPieces (CNFFormula formula)
+	{
+		// corner pieces
+		for (ListIterator<Integer> i_first_piece = m_corner_piece_numbers.listIterator (); i_first_piece.hasNext (); ) {
+			int first_piece = i_first_piece.next ();
+
+			for (ListIterator<Integer> i_second_piece = m_corner_piece_numbers.listIterator (i_first_piece.nextIndex ()); i_second_piece.hasNext (); ) {
+				int second_piece = i_second_piece.next ();
+
+				for (Integer place : m_corner_place_numbers) {
+					int[] tempArray = { - convertXijToSATVariable (first_piece, place), -convertXijToSATVariable (second_piece, place)};
+
+					formula.addClause (tempArray);
+				}
+			}
+		}
+
+		// border pieces
+		for (ListIterator<Integer> i_first_piece = m_border_piece_numbers.listIterator (); i_first_piece.hasNext (); ) {
+			int first_piece = i_first_piece.next ();
+
+			for (ListIterator<Integer> i_second_piece = m_border_piece_numbers.listIterator (i_first_piece.nextIndex ()); i_second_piece.hasNext (); ) {
+				int second_piece = i_second_piece.next ();
+
+				for (Integer place : m_border_place_numbers) {
+					int[] tempArray = { - convertXijToSATVariable (first_piece, place), -convertXijToSATVariable (second_piece, place)};
+
+					formula.addClause (tempArray);
+				}
+			}
+		}
+
+		// center pieces
 		for (ListIterator<Integer> i_first_piece = m_center_piece_numbers.listIterator (); i_first_piece.hasNext (); ) {
 			int first_piece = i_first_piece.next ();
 
