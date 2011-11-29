@@ -33,13 +33,12 @@ public class Main
 		readProblem ();
 		m_problem.printProblem ();
 
-		ProblemEncodingSimple problemEncodingSimple = new ProblemEncodingSimple (m_problem);
-		//CNFFormula cnfFormula = problemEncodingSimple.encodeToSAT ();
+		//ProblemEncodingSimple problemEncoding = new ProblemEncodingSimple (m_problem);
+		ProblemEncodingSimpleRedundant problemEncoding = new ProblemEncodingSimpleRedundant (m_problem);
 		
-		//System.out.println (cnfFormula.toDIMACS ());
 		MiniSAT minisat = new MiniSAT ("minisat", "../files");
-		minisat.solveSAT (problemEncodingSimple);
-		problemEncodingSimple.printSolution ();
+		minisat.solveSAT (problemEncoding);
+		problemEncoding.printSolution ();
 	}
 
 	/*

@@ -14,7 +14,7 @@ public class ProblemEncodingSimpleRedundant extends ProblemEncodingSimple
 	/*
 	 * constructor cloning the original problem
 	 */
-	ProblemEncodingSimpleRedundant (Problem problem)
+	public ProblemEncodingSimpleRedundant (Problem problem)
 	{
 		super (problem);
 	}
@@ -39,6 +39,20 @@ public class ProblemEncodingSimpleRedundant extends ProblemEncodingSimple
 
 	protected void encodeExplicitOneOnOneMapping (CNFFormula formula)
 	{
+		// center pieces
 
+		for (ListIterator<Integer> i_first_piece = m_center_piece_numbers.listIterator (); i_first_piece.hasNext (); ) {
+			int first_piece = i_first_piece.next ();
+
+			for (ListIterator<Integer> i_second_piece = m_center_piece_numbers.listIterator (i_first_piece.nextIndex ()); i_second_piece.hasNext (); ) {
+				int second_piece = i_second_piece.next ();
+
+				for (Integer place : m_center_place_numbers) {
+					int[] tempArray = { - convertXijToSATVariable (first_piece, place), -convertXijToSATVariable (second_piece, place)};
+
+					formula.addClause (tempArray);
+				}
+			}
+		}
 	}
 }
