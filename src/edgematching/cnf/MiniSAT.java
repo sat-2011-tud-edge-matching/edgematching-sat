@@ -28,6 +28,7 @@ public class MiniSAT
 	{
 		m_satisfiable = false;
 
+		System.err.println ("encoding problem...");
 		CNFFormula formula = problem.encodeToSAT ();
 
 		System.err.println ("writing cnf file...");
