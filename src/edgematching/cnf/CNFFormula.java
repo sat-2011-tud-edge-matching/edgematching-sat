@@ -155,6 +155,7 @@ public class CNFFormula
 	 */
 	public String toDIMACS ()
 	{
+		/*
 		String result = new String ();
 
 		if (m_comment != null) {
@@ -170,5 +171,26 @@ public class CNFFormula
 		}
 
 		return result;
+		*/
+
+		StringBuffer buffer = new StringBuffer ();
+	
+		if (m_comment != null) {
+			buffer.append (commentToDIMACS ());
+		} else {
+			buffer.append ("c cnf-formula to be satisfied\n");
+		}
+
+		buffer.append ("p cnf ");
+		buffer.append (m_variables.size ());
+		buffer.append (" ");
+		buffer.append (m_clauses.size ());
+		buffer.append ("\n");
+
+		for (Clause i_clause : m_clauses) {
+			buffer.append (i_clause.toDIMACS ());
+		}
+
+		return buffer.toString ();
 	}
 }

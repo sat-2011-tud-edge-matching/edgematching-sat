@@ -10,15 +10,20 @@ public class PicoSAT
 	protected String m_pico_sat_path;
 	protected boolean m_satisfiable;
 
+	protected TreeSet<Integer> m_solution;
+
 	public PicoSAT (String pathToBinary)
 	{
 		m_pico_sat_path = pathToBinary;
 		m_satisfiable   = false;
+
+		m_solution = new TreeSet<Integer> ();
 	}
 
 	public void solveSAT (SATSolvable problem)
 	{
 		m_satisfiable = false;
+		m_solution.clear ();
 
 		System.err.println ("encoding problem...");
 		CNFFormula formula = problem.encodeToSAT ();
@@ -58,7 +63,7 @@ public class PicoSAT
 			String current_output_line = output_stream_reader.readLine ();
 
 			while (current_output_line != null) {
-				System.err.println (current_output_line);
+				parseOutputLine (current_output_line);
 				current_output_line = output_stream_reader.readLine ();
 			}
 
@@ -74,6 +79,10 @@ public class PicoSAT
 
 			pico_sat_process.waitFor ();
 
+			if (m_satisfiable) {
+				formula.setSolution (m_solution);
+			}
+
 			result = true;
 		} catch (IOException exception) {
 		} catch (InterruptedException exception) {
@@ -83,7 +92,38 @@ public class PicoSAT
 		return result;
 	}
 
+	protected boolean parseOutputLine (String line)
+	{
+		if (line.length () < 3) return false;
 
+		switch (line.charAt (0)) {
+			case 'c':
+				return true;
+			case 's':
+				if (line.substring (2).equals ("SATISFIABLE")) {
+					m_satisfiable = true;
+				}
+				return true;
+			case 'v':
+				line = line.substring (2);
+				parseVariables (line);
+				return true;
+		}
 
+		return false;
+	}
 
+	protected void parseVariables (String line)
+	{
+		Scanner literal_scanner = new Scanner (line);
+
+		while (literal_scanner.hasNextInt ()) {
+			int current_literal = literal_scanner.nextInt ();
+			if (current_literal != 0) {
+				m_solution.add (current_literal);
+			} else {
+				break;
+			}
+		}
+	}
 }
