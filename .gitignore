@@ -4,3 +4,5 @@
 .*.swp
 solvers/*
 files/*
+
+/src/edgematching/cnf/sat4j
