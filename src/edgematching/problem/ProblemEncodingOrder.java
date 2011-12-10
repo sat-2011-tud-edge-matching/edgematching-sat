@@ -59,10 +59,12 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 					int[] tempArray1 = {- current_placement, (start_variable + i - 1)};
 					int[] tempArray2 = {- current_placement, - (start_variable + i)};
 					int[] tempArray3 = {current_placement, - (start_variable + i - 1), (start_variable + i)};
+					int[] tempArrayO = {(start_variable + i - 1), - (start_variable + i)};
 
 					formula.addClause (tempArray1);
 					formula.addClause (tempArray2);
 					formula.addClause (tempArray3);
+					formula.addClause (tempArrayO);
 				}
 
 				i ++;
@@ -111,10 +113,12 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 					int[] tempArray1 = {- current_placement, (start_variable + i - 1)};
 					int[] tempArray2 = {- current_placement, - (start_variable + i)};
 					int[] tempArray3 = {current_placement, - (start_variable + i - 1), (start_variable + i)};
+					int[] tempArrayO = {(start_variable + i - 1), - (start_variable + i)};
 
 					formula.addClause (tempArray1);
 					formula.addClause (tempArray2);
 					formula.addClause (tempArray3);
+					formula.addClause (tempArrayO);
 				}
 
 				i ++;
@@ -163,10 +167,12 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 					int[] tempArray1 = {- current_placement, (start_variable + i - 1)};
 					int[] tempArray2 = {- current_placement, - (start_variable + i)};
 					int[] tempArray3 = {current_placement, - (start_variable + i - 1), (start_variable + i)};
+					int[] tempArrayO = {(start_variable + i - 1), - (start_variable + i)};
 
 					formula.addClause (tempArray1);
 					formula.addClause (tempArray2);
 					formula.addClause (tempArray3);
+					formula.addClause (tempArrayO);
 				}
 
 				i ++;
@@ -215,10 +221,12 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 					int[] tempArray1 = {- current_placement, (start_variable + i - 1)};
 					int[] tempArray2 = {- current_placement, - (start_variable + i)};
 					int[] tempArray3 = {current_placement, - (start_variable + i - 1), (start_variable + i)};
+					int[] tempArrayO = {(start_variable + i - 1), - (start_variable + i)};
 
 					formula.addClause (tempArray1);
 					formula.addClause (tempArray2);
 					formula.addClause (tempArray3);
+					formula.addClause (tempArrayO);
 				}
 
 				i ++;
@@ -267,10 +275,12 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 					int[] tempArray1 = {- current_placement, (start_variable + i - 1)};
 					int[] tempArray2 = {- current_placement, - (start_variable + i)};
 					int[] tempArray3 = {current_placement, - (start_variable + i - 1), (start_variable + i)};
+					int[] tempArrayO = {(start_variable + i - 1), - (start_variable + i)};
 
 					formula.addClause (tempArray1);
 					formula.addClause (tempArray2);
 					formula.addClause (tempArray3);
+					formula.addClause (tempArrayO);
 				}
 
 				i ++;
@@ -319,10 +329,12 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 					int[] tempArray1 = {- current_placement, (start_variable + i - 1)};
 					int[] tempArray2 = {- current_placement, - (start_variable + i)};
 					int[] tempArray3 = {current_placement, - (start_variable + i - 1), (start_variable + i)};
+					int[] tempArrayO = {(start_variable + i - 1), - (start_variable + i)};
 
 					formula.addClause (tempArray1);
 					formula.addClause (tempArray2);
 					formula.addClause (tempArray3);
+					formula.addClause (tempArrayO);
 				}
 
 				i ++;
@@ -330,8 +342,6 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 		}
 	}
 
-	//TODO: seems not to be working for now...
-	/*
 	@Override
 	protected void encodeDiamondsBorder (CNFFormula formula)
 	{
@@ -349,6 +359,10 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 		for (int i_diamond = 0; i_diamond < m_border_diamonds_count; i_diamond ++) {
 			start_variable        = m_next_free_variable;
 			m_next_free_variable += number_of_additional_variables;
+
+			System.out.println ("current border diamond: " + i_diamond);
+			System.out.println ("current ykc variable:   " + convertYkcBorderToSATVariable (i_diamond, 0));
+			System.out.println ("current start variable: " + start_variable);
 
 			int i = 0;
 
@@ -377,10 +391,12 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 					int[] tempArray1 = {- current_ykc, (start_variable + i - 1)};
 					int[] tempArray2 = {- current_ykc, - (start_variable + i)};
 					int[] tempArray3 = {current_ykc, - (start_variable + i - 1), (start_variable + i)};
+					int[] tempArrayO = {(start_variable + i - 1), - (start_variable + i)};
 
 					formula.addClause (tempArray1);
 					formula.addClause (tempArray2);
 					formula.addClause (tempArray3);
+					formula.addClause (tempArrayO);
 				}
 
 				i ++;
@@ -433,15 +449,16 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 					int[] tempArray1 = {- current_ykc, (start_variable + i - 1)};
 					int[] tempArray2 = {- current_ykc, - (start_variable + i)};
 					int[] tempArray3 = {current_ykc, - (start_variable + i - 1), (start_variable + i)};
+					int[] tempArrayO = {(start_variable + i - 1), - (start_variable + i)};
 
 					formula.addClause (tempArray1);
 					formula.addClause (tempArray2);
 					formula.addClause (tempArray3);
+					formula.addClause (tempArrayO);
 				}
 
 				i ++;
 			}
 		}
 	}
-*/
 }
