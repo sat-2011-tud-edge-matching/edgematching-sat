@@ -61,6 +61,7 @@ public class ProblemEncodingSimple extends Problem
 	 */
 	protected int m_sat_start_border_diamonds;
 	protected int m_sat_start_center_diamonds;
+	protected int m_sat_start_next_free_variable;
 
 	/*
 	 * Solution mapping
@@ -136,7 +137,7 @@ public class ProblemEncodingSimple extends Problem
 				int color   = convertSATVariableToYkcBorderColor (i_literal);
 
 				m_solution_diamond_color_map.put (diamond, color);
-			} else {
+			} else if (i_literal < m_sat_start_next_free_variable) {
 				int diamond = convertSATVariableToYkcCenterDiamond (i_literal);
 				int color   = convertSATVariableToYkcCenterColor (i_literal);
 
@@ -335,6 +336,12 @@ public class ProblemEncodingSimple extends Problem
 
 	protected void encodeDiamonds (CNFFormula formula)
 	{
+		encodeDiamondsBorder (formula);
+		encodeDiamondsCenter (formula);
+	}
+
+	protected void encodeDiamondsBorder (CNFFormula formula)
+	{
 		// each border diamond has a color
 		for (int i_diamond = 0; i_diamond < m_border_diamonds_count; i_diamond ++) {
 			Clause tempClause = new Clause (m_border_colors_count);
@@ -353,7 +360,10 @@ public class ProblemEncodingSimple extends Problem
 
 			formula.addClause (tempClause);
 		}
+	}
 
+	protected void encodeDiamondsCenter (CNFFormula formula)
+	{
 		// each center diamond has a color
 		for (int i_diamond = 0; i_diamond < m_center_diamonds_count; i_diamond ++) {
 			Clause tempClause = new Clause (m_center_colors_count);
@@ -1313,7 +1323,8 @@ public class ProblemEncodingSimple extends Problem
 			m_center_diamonds_map_forward.put (m_center_diamonds.get (i_diamond), i_diamond);
 		}
 
-		m_sat_start_border_diamonds = m_grid_width * m_grid_width * m_grid_height * m_grid_height + 1;
-		m_sat_start_center_diamonds = m_sat_start_border_diamonds + m_border_diamonds_count * m_border_colors_count;
+		m_sat_start_border_diamonds    = m_grid_width * m_grid_width * m_grid_height * m_grid_height + 1;
+		m_sat_start_center_diamonds    = m_sat_start_border_diamonds + m_border_diamonds_count * m_border_colors_count;
+		m_sat_start_next_free_variable = m_sat_start_center_diamonds + m_center_diamonds_count * m_center_colors_count;
 	}
 }

@@ -34,7 +34,9 @@ public class Main
 		m_problem.printProblem ();
 
 		//ProblemEncodingSimple problemEncoding = new ProblemEncodingSimple (m_problem);
-		ProblemEncodingSimpleRedundant problemEncoding = new ProblemEncodingSimpleRedundant (m_problem);
+		//ProblemEncodingSimpleRedundant problemEncoding = new ProblemEncodingSimpleRedundant (m_problem);
+		//ProblemEncodingOrder problemEncoding = new ProblemEncodingOrder (m_problem);
+		ProblemEncodingOrderRedundant problemEncoding = new ProblemEncodingOrderRedundant (m_problem);
 
 		SATSolver solver = new MiniSAT ("minisat", "../files");
 		//SATSolver solver = new PicoSAT ("../solvers/picosat");

@@ -21,6 +21,7 @@ CLASSES = \
         edgematching/problem/Problem.java \
         edgematching/problem/ProblemEncodingSimple.java \
         edgematching/problem/ProblemEncodingSimpleRedundant.java \
+        edgematching/problem/ProblemEncodingOrder.java \
         edgematching/problem/Reader.java \
 	edgematching/cnf/SATSolvable.java \
 	edgematching/cnf/Clause.java \

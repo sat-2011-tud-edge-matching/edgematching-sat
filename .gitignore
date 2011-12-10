@@ -4,3 +4,11 @@
 .*.swp
 solvers/*
 files/*
+presentation/*.aux
+presentation/*.log
+presentation/*.nav
+presentation/*.out
+presentation/*.snm
+presentation/*.pdf
+presentation/*.toc
+presentation/_*

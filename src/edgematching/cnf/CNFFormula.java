@@ -14,8 +14,9 @@ public class CNFFormula
 	 * m_variables: set of variables in all clauses
 	 * m_comment: comment for output as DIMACS-file
 	 */
-	protected HashSet<Clause> m_clauses;
-	protected HashSet<Integer> m_variables;
+	//protected HashSet<Clause> m_clauses;
+	protected ArrayList<Clause> m_clauses;
+	protected TreeSet<Integer> m_variables;
 
 	/*
 	 * m_solution: literals mapped to true by solver
@@ -31,9 +32,7 @@ public class CNFFormula
 	 */
 	public CNFFormula ()
 	{
-		m_clauses   = new HashSet<Clause> ();
-		m_variables = new HashSet<Integer> ();
-		m_solved    = false;
+		this ("");
 	}
 
 	/*
@@ -41,8 +40,9 @@ public class CNFFormula
 	 */
 	public CNFFormula (String comment)
 	{
-		m_clauses   = new HashSet<Clause> ();
-		m_variables = new HashSet<Integer> ();
+		//m_clauses   = new HashSet<Clause> ();
+		m_clauses   = new ArrayList<Clause> ();
+		m_variables = new TreeSet<Integer> ();
 		m_comment   = comment;
 		m_solved    = false;
 	}

@@ -22,6 +22,7 @@ public class ProblemEncodingSimpleRedundant extends ProblemEncodingSimple
 	/*
 	 * function encoding our problem to sat
 	 */
+	@Override
 	public CNFFormula encodeToSAT ()
 	{
 		CNFFormula formula = super.encodeToSAT ();
@@ -84,8 +85,6 @@ public class ProblemEncodingSimpleRedundant extends ProblemEncodingSimple
 				}
 			}
 		}
-
-		// border colors do not make sense according to paper ... ???
 	}
 
 	protected void encodeExplicitOneOnOneMappingPlaces (CNFFormula formula)
