@@ -360,10 +360,6 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 			start_variable        = m_next_free_variable;
 			m_next_free_variable += number_of_additional_variables;
 
-			System.out.println ("current border diamond: " + i_diamond);
-			System.out.println ("current ykc variable:   " + convertYkcBorderToSATVariable (i_diamond, 0));
-			System.out.println ("current start variable: " + start_variable);
-
 			int i = 0;
 
 			for (int i_color = 0; i_color < m_border_colors_count; i_color ++) {
