@@ -12,3 +12,5 @@ presentation/*.snm
 presentation/*.pdf
 presentation/*.toc
 presentation/_*
+
+/src/edgematching/cnf/sat4j
