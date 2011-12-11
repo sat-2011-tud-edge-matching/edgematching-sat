@@ -68,6 +68,11 @@ public class ProblemEncodingSimple extends Problem
 	 */
 	protected Map<Integer,Integer> m_solution_diamond_color_map;
 
+	/* 
+	 * Comment for cnf-file
+	 */
+	protected String m_sat_comment;
+
 	/*
 	 * simple constructor cloning the original problem
 	 */
@@ -78,6 +83,10 @@ public class ProblemEncodingSimple extends Problem
 		initPiecesAndPlaces ();
 		initColors ();
 		initDiamonds ();
+
+		m_sat_comment = "simple encoding of an etch-matching puzzle\n" +
+				"with size " + m_grid_width + " x " + m_grid_height + "\n" +
+				(m_bounded ? "bounded" : "unbounded") + " and " + (m_signed ? "signed" : "unsigned") + ".\n";
 	}
 
 	/*
@@ -85,9 +94,7 @@ public class ProblemEncodingSimple extends Problem
 	 */
 	public CNFFormula encodeToSAT ()
 	{
-		CNFFormula formula = new CNFFormula ("simple encoding of an etch-matching puzzle\n" +
-				"with size " + m_grid_width + " x " + m_grid_height + "\n" +
-				(m_bounded ? "bounded" : "unbounded") + " and " + (m_signed ? "signed" : "unsigned") + ".\n");
+		CNFFormula formula = new CNFFormula (m_sat_comment);
 
 		if (m_bounded) {
 			encodeCorners (formula);

@@ -152,6 +152,7 @@ public class Generate {
 	{
 		int width  = -1;
 		int height = -1;
+		int colors = -1;
 		boolean bounded   = false;
 		boolean is_signed = false;
 
@@ -171,23 +172,24 @@ public class Generate {
 
 				if (width == -1) {
 					width = current_int;
-				} else {
+				} else if (height == -1) {
 					height = current_int;
+				} else {
+					colors = current_int;
 				}
 			} catch (NumberFormatException ex) {
 			}
 		}
 
-		if ((width <= 0) || (height <= 0)) {
-			System.err.println ("Incorrect specification of problem to generate!");
-			System.exit (1);
-		}
+		if (width  < 0) width  = 3;
+		if (height < 0) height = 3;
+		if (colors < 0) colors = 9;
 
 		m_bounded = bounded;
 		m_signed  = is_signed;
 		m_width   = width;
 		m_height  = height;
-		m_colors  = 9;
+		m_colors  = colors;
 	}
 
 	protected static void printProblem ()

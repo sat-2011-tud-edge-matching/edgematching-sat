@@ -8,6 +8,10 @@ public class ProblemEncodingOrderRedundant extends ProblemEncodingOrder
 	public ProblemEncodingOrderRedundant (Problem problem)
 	{
 		super (problem);
+
+		m_sat_comment = "redundant order encoding of an etch-matching puzzle\n" +
+				"with size " + m_grid_width + " x " + m_grid_height + "\n" +
+				(m_bounded ? "bounded" : "unbounded") + " and " + (m_signed ? "signed" : "unsigned") + ".\n";
 	}
 
 	@Override

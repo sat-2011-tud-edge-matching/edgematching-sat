@@ -12,6 +12,10 @@ public class ProblemEncodingOrder extends ProblemEncodingSimple
 		super (problem);
 
 		m_next_free_variable = m_sat_start_next_free_variable;
+
+		m_sat_comment = "order encoding of an etch-matching puzzle\n" +
+				"with size " + m_grid_width + " x " + m_grid_height + "\n" +
+				(m_bounded ? "bounded" : "unbounded") + " and " + (m_signed ? "signed" : "unsigned") + ".\n";
 	}
 
 	/*
