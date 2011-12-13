@@ -4,6 +4,7 @@
 .*.swp
 solvers/*
 files/*
+temp/*
 presentation/*.aux
 presentation/*.log
 presentation/*.nav
@@ -12,5 +13,4 @@ presentation/*.snm
 presentation/*.pdf
 presentation/*.toc
 presentation/_*
-
 /src/edgematching/cnf/sat4j

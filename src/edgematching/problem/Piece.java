@@ -294,11 +294,42 @@ public class Piece
 	{
 		switch (index) {
 			case 0: return "+-------+";
-			case 1: return "|\\  " + getColor(0) + "  /|";
+			case 1: 
+				String color_0_str = Integer.toString (getColor (0));
+				switch (color_0_str.length ()) {
+					case 1: color_0_str = " " + color_0_str + " ";
+						break;
+					case 2: color_0_str += " ";
+						break;
+				}
+				return "|\\ " + color_0_str + " /|";
 			case 2: return "|  \\ /  |";
-			case 3: return "|" + getColor(3) + "  X  " + getColor(1) + "|";
+			case 3: 
+				String color_3_str = Integer.toString (getColor (3));
+				switch (color_3_str.length ()) {
+					case 1: color_3_str = color_3_str + "  ";
+						break;
+					case 2: color_3_str += " ";
+						break;
+				}
+				String color_4_str = Integer.toString (getColor (4));
+				switch (color_4_str.length ()) {
+					case 1: color_4_str = "  " + color_4_str;
+						break;
+					case 2: color_4_str = " " + color_4_str;
+						break;
+				}
+				return "|" + color_3_str + "X" + color_4_str + "|";
 			case 4: return "|  / \\  |";
-			case 5: return "|/  " + getColor(2) + "  \\|";
+			case 5:
+				String color_2_str = Integer.toString (getColor (2));
+				switch (color_2_str.length ()) {
+					case 1: color_2_str = " " + color_2_str + " ";
+						break;
+					case 2: color_2_str += " ";
+						break;
+				}
+				return "|/ " + color_2_str + " \\|";
 			case 6: return "+-------+";
 			default: return null;
 		}
