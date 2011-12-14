@@ -312,14 +312,14 @@ public class Piece
 					case 2: color_3_str += " ";
 						break;
 				}
-				String color_4_str = Integer.toString (getColor (4));
-				switch (color_4_str.length ()) {
-					case 1: color_4_str = "  " + color_4_str;
+				String color_1_str = Integer.toString (getColor (1));
+				switch (color_1_str.length ()) {
+					case 1: color_1_str = "  " + color_1_str;
 						break;
-					case 2: color_4_str = " " + color_4_str;
+					case 2: color_1_str = " " + color_1_str;
 						break;
 				}
-				return "|" + color_3_str + "X" + color_4_str + "|";
+				return "|" + color_3_str + "X" + color_1_str + "|";
 			case 4: return "|  / \\  |";
 			case 5:
 				String color_2_str = Integer.toString (getColor (2));
